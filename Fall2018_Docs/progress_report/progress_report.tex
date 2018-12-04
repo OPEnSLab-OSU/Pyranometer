@@ -1,0 +1,132 @@
+\documentclass[10pt,draftclsnofoot,onecolumn,letterpaper]{article}
+\usepackage{ragged2e}
+\usepackage[svgnames,table]{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{longtable}
+
+\usepackage[utf8]{inputenc}
+\usepackage[left=0.75in, right=0.75in, top=0.75in]{geometry}
+    
+\usepackage[T1]{fontenc}
+\setlength{\parindent}{0pt}
+    
+    
+\begin{document}
+\begin{Center}
+{\fontsize{14pt}{16.8pt}\selectfont OPEnS Pyranometer: IoT Solar Radiation Sensor\\ Progress Report\par}
+\end{Center}\par
+    
+\begin{Center}
+Garen Porter, Brooke Weir, Alejandro Tovar\\
+\end{Center}\par
+\hrule
+\begin{Center}
+{\fontsize{12pt}{16.8pt}\selectfont \textbf{Abstract}\par}
+\end{Center}\par
+    
+{\fontsize{10pt}{12.0pt}\selectfont Over the course of the fall term, the Pyranosaurs team has done substantial research into pyranometers and the various parts that they consist of. We have explored several different technologies and have come up with the most optimal implementations for the wireless, open-source pyranometer we plan to implement. We have kept in mind various criterion throughout the term and have gotten to the point were we are now ready to begin building and implementing a couple different pyranometer designs.
+\par}\par
+\newpage
+\pagenumbering{arabic}
+\tableofcontents
+\clearpage
+    
+\section{Goals}
+    The goal of the Pyranosaurs team is to make an IoT solar radiation sensor that is open-source, low-cost, accurate, and easy to assemble. Open-source pyranometers exist, but they are poorly documented and not wireless. To keep the pyranometer low-cost, the parts used will either be inexpensive or 3D printed. To make the pyranometer open-source, the CAD designs and code will be freely available online to give users the ability to construct the pyranometer anywhere with access to a Maker Space. Instructions to build, operate, and deploy the pyranometer will be thorough and easy to follow to make the pyranometer as user friendly as possible. As the pyranometer project progresses, it will continually be tested against commercial-grade sensors to verify accuracy. Due to the pyranometer project being sponsored by the OPEnS lab, it must successfully integrate into the LOOM IoT system and follow the same protocols as the other OPEnS lab projects. As with other OPEnS projects, the pyranometer will be wireless. To do this, the pyranometer will transmit data via LoRa radio to a data hub that will use a PushingBox API that translates the data into HTTPS and uploads the data to a Google sheet.
+    
+\section{Current State}
+Currently, we have a physical design finished for the thermopile and photo diode pyranometers. We are waiting for several parts to arrive so that we may implement the photo diode pyranometer. The thermopile pyranometer design consists of mostly 3D printed parts, so we are ready to begin creating CAD designs for the thermopile pyranometer. We have tests written and designed to begin verifying and calibrating the thermopile, so we can begin performing those tests any time. Each team member has done thorough research on pyranometers in general and on their respective pyranometer parts (as seen in our tech reviews), so we are about ready to start building and implementing designs.
+\section{Problems and Solutions}
+Our first and biggest problem is waiting for parts to arrive. We ordered parts for a photo diode-based pyranometer a few weeks ago, but they have yet to arrive. We will be checking with our client and talk about expediting the shipping process, or see if something went wrong with the parts order. A second problem we are having is getting the thermopile to work with the multiplexer/Feather M0 combination. We will be working with the OPEnS staff and see what we are missing with the sensor integration and look into updating the LOOM documentation on how to integrate I2C sensors into LOOM.
+\section{Interesting Code}
+The below code segment is the setup function for the Adafruit TMP007, better known as the thermopile. The thermopile is registered under I2C address 0x41, which the multiplexer uses to interact with the thermopile. The delay value is the interval at which the thermopile takes readings, this value is adjusted per the thickness of the black body object being measured.
+\begin{lstlisting}[caption={TMP007 Setup},captionpos=b]
+bool setup_tmp007() 
+{
+    //Setup Here
+    Serial.print("SETTING UP THERMOPILE\n");
+	bool is_setup;
+	state_tmp007.inst_tmp007 = Adafruit_TMP007(0x41);
+	if(state_tmp007.inst_tmp007.begin()){
+		is_setup = true;
+		config_tmp007.delay = 4000;
+		LOOM_DEBUG_Println("Initialized tmp007");
+	}
+	else{
+		is_setup = false;
+		LOOM_DEBUG_Println("Failed to initialize tmp007");
+	}
+
+    Serial.print("FINISHED SETTING UP THERMOPILE\n");
+    return is_setup;
+}
+\end{lstlisting}
+
+Listing 2 shows the thermopile taking measurements. The thermopile reports the local temperature of an object (the black body), the temperature of the thermopile die, and the voltage generated by the thermopile. After this function is called by the multiplexer, the data is packed into an OSC bundle and either written to an SD card or transmitted over a wireless protocol (Wifi or LoRa). 
+
+\begin{lstlisting}[caption={TMP007 Setup},captionpos=b]
+void measure_tmp007() 
+{
+  Serial.print("MEASURING\n");
+	state_tmp007.volt = state_tmp007.inst_tmp007.readRawVoltage();
+	state_tmp007.obj_temp = state_tmp007.inst_tmp007.readObjTempC();
+	state_tmp007.die_temp = state_tmp007.inst_tmp007.readDieTempC();
+
+  #if LOOM_DEBUG == 1
+    Serial.print(F("[ ")); Serial.print(millis()); Serial.print(F(" ms ] "));
+    Serial.print(F("Volts: ")); Serial.print(state_tmp007.volt); Serial.print(F("  "));
+    Serial.print(F("Die Temp: ")); Serial.print(state_tmp007.die_temp); Serial.print(F("  "));
+    Serial.print(F("Object Temp: ")); Serial.print(state_tmp007.obj_temp); Serial.print(F("  "));
+  #endif
+
+  Serial.print("DELAYING\n");
+  delay(config_tmp007.delay);
+}
+\end{lstlisting}
+
+\section{Week by Week Summary}
+\subsection{Week 1}
+Week 1 was about becoming familiar with senior capstone and knowing what to expect throughout the year. At this point no one knew what project they would be working on.
+\subsection{Week 2}
+Week 2 was similar to week 1, but at this point each student was trying to figure out which projects they would be interested in. 
+\subsection{Week 3}
+In week 3 we learned we would be working with Chet on building a wireless, open-source pyranometer. Each team member drafted a problem statement which were later combined into a single problem statement. We made contact with our client and set up a time to meet and discuss the project. We also made our group GitHub repository and met with our TA for the first time. 
+\subsection{Week 4}
+We first met our client during week 4 and we were able to discuss the project and work out different goals to strive for each term. Fall term was to be a time to develop three pyranometer prototypes; winter term is to involve testing the prototypes and seeing which implementations are best; and during spring we are to synthesize the three prototypes into a single pyranometer. We were introduced to Chad Higgins and set up a time to meet with him the following week. Finally, we finished our problem statement and submitted it.
+\subsection{Week 5}
+During week 5 we created a rough draft of our requirements document, ordered parts for two of our pyranometer prototypes, and met with Chad Higgins. During our meeting with Chad, we modified our time-line slightly and pushed back the due date for our three prototypes to halfway through winter term. Chad pointed out some potential difficulties we may encounter when implementing our different designs. We as a team came up with 3 parts for each team member to focus on for our tech reviews and for the rest of the year. Each team member was to become an expert on their assigned parts. We also started to familiarize ourselves with some of the equipment we would be using for our pyranometer. We started by making a Feather M0 blink an LED to get started working with Arduino products. 
+\subsection{Week 6}
+During week 6 we submitted our requirements document to our client and he gave us some helpful feedback. As a team, we sat down and wrote a document that outlines the expectations we have of each other and as a team. We began writing our respective tech review documents and each began researching pyranometers, thermopiles, and photodiodes heavily. We began working with a lux sensor and were able to program a Feather M0 to get record readings from the lux sensor and write them to an SD card. The lux method is to be one of our pyranometer designs, so this week we essentially finished the hardware portion of the lux-pyranometer design. The lux sensor was already integrated into LOOM, so it was a good experience to familiarize ourselves with how a LOOM sensor should work as a baseline. 
+\subsection{Week 7}
+Our thermopile arrived week 7 and we were able to solder pins to it and wire it to a Feather M0. We were able to get readings from the thermopile via the serial monitor in the Arduino IDE. We reached to Chad Higgins to setup a meeting with him about how to verify the accuracy of the thermopile and how to translate the thermopile data to $W/m^2$. We each finished our tech reviews this week.
+\subsection{Week 8}
+During week 8 we met with Chad Higgins and discussed the thermopile and photo diode methods in detail. We went over how they work, how to verify them, and how to create useful data from them. From the information gained in the meeting, we were able to refine our thermopile-based pyranometer design and create tests that verify the thermopile and photo diode methods. We began trying to integrate the thermopile sensor into LOOM, but were unsuccessful. 
+\subsection{Week 9}
+Week 9 was a short week due to Thanksgiving break. We began work on our design document, which entailed each of us discussing how we are going to implement the technologies and parts discussed in our tech reviews. 
+\subsection{Week 10}
+During week 10 we finalized and submitted our design document. We revised our requirements document using the revision recommendations made by our client. We created our fall term progress report (both the video and written portion) and submitted our design document, requirements document, progress report, and problem statement to our client for verification. We also created an experimental procedure for testing the thermopile based on Chad's input.
+
+\section{Retrospective}
+%\begin{center}
+    \begin{longtable}{| p{0.17\linewidth} | p{0.22\linewidth} | p{0.22\linewidth} | p{0.22\linewidth} |}
+         \hline \textbf{Task} & \textbf{Positives} & \textbf{Deltas} & \textbf{Actions} \\
+         \hline Problem Statement & Completed. & None. & None. \\
+         \hline Requirements & On second draft. & Continue to revise. & Change based on further comments from Chet. \\
+         \hline Design Document & On first draft. & Continue to revise. & Make changes based on client feedback. \\
+         \hline Feather M0 & Works with Adalogger and sensors; able to write sensor data to an SD card. & Be able to get readings from multiple sensors, be powered wirelessly, and transmit data over LoRa. & Connect feather to a multiplexer (Adafruit TCA9548A) and configure it to control multiple chips; wire a lithium-ion battery pack to the feather. \\
+         \hline Lux sensor & Able to sense and put data on an SD card; integrated into LOOM. & Verify accuracy of reported data. & Test the lux sensor probably against standard IR sensor. \\
+         \hline Thermopile & Able to Sense and output data to serial monitor. & Needs to be integrated into LOOM and work with a multiplexer. & Work with OPEnS lab staff on how to finish integrating the thermopile into LOOM. \\
+         \hline Photodiode & We understand how the photodiode method works. & Need the parts to arrive; need to construct a photdiode based pyranometer. & Talk with our client and see about expediting the shipping process for hte photodiode parts.\\
+         \hline LOOM & We understand the purpose and function of LOOM; we understand how new sensors can be integrated into LOOM. & Configure the thermopile to correctly integrate with the multiplexer. & Work with OPEnS staff to understand how the multiplexer communicates with attached chips. \\
+         \hline Housing structure & Researched ways to create a good way to house all of the elements and get accurate data.  & Needs to be printed. & Create designs in CAD and print those designs in one of the 3D printers at OPEnS lab. \\
+         \hline Weatherproofing & Researched ways to insulate against wind and protect the sensor from water damage. & Needs to be applied to structure. & Build the structure and apply ideas that have been researched. Test the housing structure for damage before putting electronics inside. \\
+         \hline Black Body Object & The best black body object to use is a common 3D priting material & Create a black dome made out of PLA. & Design the dome using CAD and print it. \\
+         \hline Power Source & The lithium-ion battery chosen to be used is the same power source used in many other OPEnS projects. & Make the pyranometer wireless & Wire a lithium-ion battery pack to the Feather M0. \\
+         \hline LoRa Radio & Can be implemented easily with LOOM using the LOOM API. & Give the pyranometer the ability to trasmit data over LoRa. & Wire a LoRa chip to the Feather M0, attach an antennae, and usee LoRa LOOM API to trasmit data readings to a Google sheet. \\
+         \hline
+    \end{longtable}
+%\end{center}
+
+\end{document}
