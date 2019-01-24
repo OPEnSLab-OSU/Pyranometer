@@ -42,7 +42,7 @@ void loop()
   package_data(&send_bndl);     // Copy sensor data from state to provided bundle
   send_bundle(&send_bndl, WIFI);    // Send bundle of packaged data
 
-  log_bundle(&send_bndl,SDCARD, "pyro.txt"); //filename for SD files
+  log_bundle(&send_bndl,SDCARD, "pyro.csv"); //filename for SD files
   additional_loop_checks();     // Miscellaneous checks
   // --- End Example ---
 

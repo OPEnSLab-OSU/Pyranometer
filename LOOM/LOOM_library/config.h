@@ -294,8 +294,8 @@
 	#define is_mpu6050         0	// Accelerometer / Gyroscope (NOTE* I2C address conflicts with RTC if not manually changed) (much better supported on Ishield)
 	#define is_ms5803          1	// Pressure Sensor
 	#define is_sht31d          1	// Temperature / Humidity
-	#define is_tsl2561         1	// Lux Sensor
-	#define is_tsl2591         1	// Lux Sensor
+	#define is_tsl2561         0	// Lux Sensor
+	#define is_tsl2591         0	// Lux Sensor
 	#define is_tmp007		     1	// thermopile sensor
 	#define is_zxgesturesensor 1	// ZX_Distance Sensor
 
@@ -337,7 +337,7 @@
 	#define is_lora       1		
 
 	// Lux Sensor
-	#define is_tsl2561 1
+	#define is_tsl2561 0
 		#define is_tsl2561_low   1 	// Generally the upper light sensor
 		#define is_tsl2561_float 1  // Generally the lower light sensor
 		#define is_tsl2561_high  0  
@@ -669,11 +669,11 @@
 #endif
 
 #if is_tmp007 == 1
-	#define i2c_addr_tmp007_0x41 	1
+	#define i2c_addr_tmp007_0x40 	1
 
 	#if is_multiplexer != 1
-		#if i2c_addr_tmp007_0x41 == 1
-			#define tmp007_0x41_name "tmp007"
+		#if i2c_addr_tmp007_0x40 == 1
+			#define tmp007_0x40_name "tmp007"
 		#endif 
 	#endif
 #endif

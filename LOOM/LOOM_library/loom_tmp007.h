@@ -52,7 +52,7 @@ bool setup_tmp007()
 	//Setup Here
   Serial.print("SETTING UP THERMOPILE\n");
 	bool is_setup;
-	state_tmp007.inst_tmp007 = Adafruit_TMP007(0x41);
+	state_tmp007.inst_tmp007 = Adafruit_TMP007(0x40);
 	if(state_tmp007.inst_tmp007.begin()){
 		is_setup = true;
 		config_tmp007.delay = 4000;
@@ -100,11 +100,11 @@ void package_tmp007(OSCBundle *bndl, char packet_header_string[])
 {
 	char address_string[255];
 
-	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x41_name, "_voltage");
+	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x40_name, "_voltage");
 	bndl->add(address_string).add((int32_t)state_tmp007.volt);
-	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x41_name, "object_temp");
+	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x40_name, "object_temp");
 	bndl->add(address_string).add((int32_t)state_tmp007.obj_temp);
-	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x41_name, "_die_temp");
+	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x40_name, "_die_temp");
 	bndl->add(address_string).add((int32_t)state_tmp007.die_temp);
 }
 #endif
