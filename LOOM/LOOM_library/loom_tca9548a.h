@@ -45,7 +45,8 @@ byte possible_addresses[] = {0x00
 			, 0x20, 0x21
 		#endif
 		#if is_zxgesturesensor == 1
-			, 0x10, 0x11
+			//, 0x10
+			, 0x11
 		#endif
 		#if is_sht31d == 1
 			, 0x44, 0x45
@@ -218,7 +219,8 @@ void measure_sensor_data(uint8_t i2c_addr)
 				return;
 		#endif
 		#if is_zxgesturesensor == 1
-			case 0x10: case 0x11:
+			//case 0x10: 
+			case 0x11:
 				measure_zxgesturesensor();
 				return;
 		#endif
@@ -293,7 +295,7 @@ void package_sensor_data(uint8_t i2c_addr, OSCBundle *bndl, char packet_header_s
 		#endif
 		#if is_veml6075 == 1
 			case 0x10:
-				package_veml6075(bndl, packet_header_string, port);
+				package_veml6075(bndl, packet_header_string, (int)port);
 				return;
 		#endif
     	#if is_tmp007 == 1
@@ -312,7 +314,8 @@ void package_sensor_data(uint8_t i2c_addr, OSCBundle *bndl, char packet_header_s
 				return;
 		#endif
 		#if is_zxgesturesensor == 1
-			case 0x10: case 0x11:
+			//case 0x10: 
+			case 0x11:
 				package_zxgesturesensor(bndl, packet_header_string, port);
 				return;
 		#endif
@@ -482,7 +485,8 @@ void send_sensors(OSCBundle *bndl, char packet_header_string[])
 						msg.add("fxas21002"); 		break;
 				#endif
 				#if is_zxgesturesensor == 1
-					case 0x10: case 0x11:
+					//case 0x10: 
+					case 0x11:
 						msg.add("zxgesturesensor"); break;
 				#endif
 				#if is_sht31d == 1
@@ -609,7 +613,8 @@ void setup_mux_sensors()
 					break;
 			#endif
 			#if is_zxgesturesensor == 1
-				case 0x10: case 0x11:
+				//case 0x10: 
+				case 0x11:
 					setup_zxgesturesensor();
 					break;
 			#endif

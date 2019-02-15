@@ -62,7 +62,7 @@ bool setup_veml6075()
 	//Setup Here
   Serial.print("SETTING UP UV SENSOR\n");
 	bool is_setup;
-	state_veml6075.inst_veml6075 = Adafruit_VEML6075(0x10);
+	state_veml6075.inst_veml6075 = Adafruit_VEML6075();
 	if(state_veml6075.inst_veml6075.begin()){
 		is_setup = true;
 		config_veml6075.delay = 1000;
