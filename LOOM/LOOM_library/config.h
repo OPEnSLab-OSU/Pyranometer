@@ -173,7 +173,8 @@
 		// #define is_tsl2561_float 1
 		// #define is_tsl2561_high  1
 	#endif
-#define is_tmp007		       1	// thermopile
+#define is_veml6075		   0	// UV sensor
+#define is_tmp007		   1	// thermopile
 #define is_fxos8700        0	// Accelerometer / Magnetometer
 #define is_fxas21002       0	// Gyroscope
 #define is_zxgesturesensor 0	// ZX_Distance Sensor
@@ -296,7 +297,8 @@
 	#define is_sht31d          1	// Temperature / Humidity
 	#define is_tsl2561         0	// Lux Sensor
 	#define is_tsl2591         0	// Lux Sensor
-	#define is_tmp007		     1	// thermopile sensor
+	#define is_tmp007		   1	// thermopile sensor
+	#define is_veml6075		   0	// UV sensor
 	#define is_zxgesturesensor 1	// ZX_Distance Sensor
 
 	#define is_button 		   1	// 1 to enable button
@@ -664,6 +666,16 @@
 	#if is_multiplexer != 1
 		#if i2c_addr_tsl2591_0x29 == 1
 			#define tsl2591_0x29_name "TSL2591"
+		#endif 
+	#endif
+#endif
+
+#if is_veml6075 == 1
+	#define i2c_addr_veml6075_0x10 	1
+
+	#if is_multiplexer != 1
+		#if i2c_addr_veml6075_0x10 == 1
+			#define veml6075_0x10_name "veml6075"
 		#endif 
 	#endif
 #endif

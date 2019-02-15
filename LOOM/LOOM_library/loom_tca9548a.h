@@ -32,6 +32,9 @@ byte possible_addresses[] = {0x00
 		#if is_tsl2561 == 1
 			, 0x39, 0x49
 		#endif
+		#if is_veml6075 == 1
+			, 0x10
+		#endif
     	#if is_tmp007 == 1
       		, 0x40
     	#endif
@@ -184,6 +187,11 @@ void measure_sensor_data(uint8_t i2c_addr)
 		#if is_tsl2561 == 1 && is_tsl2591 != 1
 			case 0x29: 
 		#endif
+		#if is_veml6075 == 1
+			case 0x10:
+				measure_veml6075();
+				return;
+		#endif
     	#if is_tmp007 == 1
       		case 0x40:
         		measure_tmp007();
@@ -281,6 +289,11 @@ void package_sensor_data(uint8_t i2c_addr, OSCBundle *bndl, char packet_header_s
 		#if is_tsl2591 == 1
 			case 0x29: 
 				package_tsl2591(bndl, packet_header_string, port);
+				return;
+		#endif
+		#if is_veml6075 == 1
+			case 0x10:
+				package_veml6075(bndl, packet_header_string, port);
 				return;
 		#endif
     	#if is_tmp007 == 1
@@ -452,6 +465,10 @@ void send_sensors(OSCBundle *bndl, char packet_header_string[])
 					case 0x29: case 0x39: case 0x49: 
 						msg.add("tsl2591"); 		break;
 				#endif
+				#if is_veml6075 == 1
+					case 0x10:
+						msg.add("veml6075");	break;
+				#endif
         		#if is_tmp007 == 1
           			case 0x40:
             			msg.add("tmp007");     break;
@@ -571,11 +588,16 @@ void setup_mux_sensors()
 					setup_tsl2591();
 					break;
 			#endif
-      #if is_tmp007 == 1
-     		case 0x40: 
-     			setup_tmp007();
-       		break;
-      #endif
+			#if is_veml6075 == 1
+				case 0x10:
+					setup_veml6075();
+					break;
+			#endif
+      		#if is_tmp007 == 1
+     			case 0x40: 
+     				setup_tmp007();
+       				break;
+      		#endif
 			#if is_fxos8700 == 1
 				case 0x1C: case 0x1D: case 0x1E: case 0x1F:
 					setup_fxos8700();

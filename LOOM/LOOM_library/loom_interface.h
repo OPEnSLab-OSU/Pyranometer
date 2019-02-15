@@ -210,6 +210,9 @@ void measure_sensors()
 		#if is_tsl2561 == 1
 			measure_tsl2561();
 		#endif
+		#if is_veml6075 == 1
+			measure_veml6075();
+		#endif
 		#if is_tmp007 == 1
 			measure_tmp007();
 		#endif
@@ -314,9 +317,12 @@ void package_data(OSCBundle *send_bndl)
 		#if is_tsl2561 == 1
 			package_tsl2561(send_bndl, configuration.packet_header_string);
 		#endif
+		#if is_veml6075 == 1
+			package_veml6075(send_bndl, configuration.packet_header_string);
+		#endif
 		#if is_tmp007 == 1
 			package_tmp007(send_bndl, configuration.packet_header_string);
-    #endif
+    	#endif
 		#if is_zxgesturesensor == 1
 			package_zxgesturesensor(send_bndl, configuration.packet_header_string);
 		#endif
