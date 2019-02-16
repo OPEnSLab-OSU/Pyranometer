@@ -1,15 +1,22 @@
-LATEX	= latex -shell-escape
-#BIBTEX	= bibtex
-DVIPS	= dvips
-DVIPDF  = dvipdft
-XDVI	= xdvi -gamma 4
-GH		= gv
+CC = gcc
+CFLAGS=-Werror -Wall -Wextra -std=c99 -g -lpthread -D DEBUG
+
+LATEXINSTALL=/usr/local/apps/tex_live/current/bin/x86_64-linux/
+
+LATEX	= $(LATEXINSTALL)latex -shell-escape
+#BIBTEX	= $(LATEXINSTALL)bibtex
+DVIPS	= $(LATEXINSTALL)dvips
+DVIPDF  = $(LATEXINSTALL)dvipdft
+XDVI	= $(LATEXINSTALL)xdvi -gamma 4
+GH		= $(LATEXINSTALL)gv
 
 EXAMPLES = $(wildcard *.c)
 SRC	:= $(shell egrep -l '^[^%]*\\begin\{document\}' *.tex)
 TRG	= $(SRC:%.tex=%.dvi)
 PSF	= $(SRC:%.tex=%.ps)
 PDF	= $(SRC:%.tex=%.pdf)
+
+all: pdf
 
 pdf: $(PDF)
 
@@ -21,7 +28,7 @@ $(TRG): %.dvi: %.tex $(EXAMPLES)
 	#requires that you \include{pygments.tex} in your preamble
 
 	$(LATEX) $<
-	$(BIBTEX) $(<:%.tex=%)
+	#$(BIBTEX) $(<:%.tex=%)
 	$(LATEX) $<
 	$(LATEX) $<
 	#remove the pygmentized output to avoid cluttering up the directory
@@ -39,8 +46,6 @@ show: $(TRG)
 
 showps: $(PSF)
 	@for i in $(PSF) ; do $(GH) $$i & done
-
-all: pdf
 
 clean:
 	rm -f *.pdf *.ps *.dvi *.out *.log *.aux *.bbl *.blg *.pyg
