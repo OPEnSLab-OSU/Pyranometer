@@ -21,6 +21,7 @@ struct state_tmp007_t {
 	uint16_t volt;
 	uint16_t obj_temp;
 	uint16_t die_temp;
+	double irradiance;
 };
 
 
@@ -92,6 +93,7 @@ void package_tmp007(OSCBundle *bndl, char packet_header_string[], int port)
 	msg.add("voltage").add((int32_t)state_tmp007.volt);
 	msg.add("object_temp").add((int32_t)state_tmp007.obj_temp);
 	msg.add("die_temp").add((int32_t)state_tmp007.die_temp);
+	msg.add("irradiance").add((int32_t)state_tmp007.irradiance);
 	bndl->add(msg);
 }
 
@@ -106,6 +108,8 @@ void package_tmp007(OSCBundle *bndl, char packet_header_string[])
 	bndl->add(address_string).add((int32_t)state_tmp007.obj_temp);
 	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x40_name, "_die_temp");
 	bndl->add(address_string).add((int32_t)state_tmp007.die_temp);
+	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x40_name, "_irradiance");
+	bndl->add(address_string).add((int32_t)state_tmp007.irradiance);
 }
 #endif
 
@@ -117,18 +121,26 @@ void package_tmp007(OSCBundle *bndl, char packet_header_string[])
 //
 void measure_tmp007() 
 {
-  Serial.print("MEASURING\n");
+	Serial.print("DELAYING\n");
+  	delay(config_tmp007.delay);
+  	Serial.print("MEASURING\n");
+
 	state_tmp007.volt = state_tmp007.inst_tmp007.readRawVoltage();
 	state_tmp007.obj_temp = state_tmp007.inst_tmp007.readObjTempC();
 	state_tmp007.die_temp = state_tmp007.inst_tmp007.readDieTempC();
+
+	//use Stefan-Boltzmann's Law
+	double emissivity = 0.91;
+	double stefan_const = 0.000000056703;
+	double area = 1.714514;
+	double temp = state_tmp007.obj_temp * state_tmp007.obj_temp * state_tmp007.obj_temp * state_tmp007.obj_temp;
+	state_tmp007.irradiance = emissivity * stefan_const * area * temp;
 
   #if LOOM_DEBUG == 1
     Serial.print(F("[ ")); Serial.print(millis()); Serial.print(F(" ms ] "));
     Serial.print(F("Volts: ")); Serial.print(state_tmp007.volt); Serial.print(F("  "));
     Serial.print(F("Die Temp: ")); Serial.print(state_tmp007.die_temp); Serial.print(F("  "));
     Serial.print(F("Object Temp: ")); Serial.print(state_tmp007.obj_temp); Serial.print(F("  "));
+	Serial.print(F("Object Temp: ")); Serial.print(state_tmp007.obj_temp); Serial.print(F("  "));
   #endif
-
-  Serial.print("DELAYING\n");
-  delay(config_tmp007.delay);
 }

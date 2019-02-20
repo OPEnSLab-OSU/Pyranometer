@@ -165,7 +165,7 @@
 // --- I2C Sensors ---
 // Using I2C sensors without the multiplexer
 // Multiplexer / aggregate device may override these settings
-#define is_tsl2591         1	// Lux Sensor
+#define is_tsl2591         0	// Lux Sensor
 #define is_tsl2561         0	// Lux Sensor
 	#if is_tsl2561 == 1
 		#define tsl2561_res 3 // 1 for fastest, low-res, 2 for middle, 3 for slow, high-res
@@ -173,7 +173,7 @@
 		// #define is_tsl2561_float 1
 		// #define is_tsl2561_high  1
 	#endif
-#define is_veml6075		     1	// UV sensor
+#define is_veml6075		     0	// UV sensor
 #define is_tmp007		       1	// thermopile
 #define is_fxos8700        0	// Accelerometer / Magnetometer
 #define is_fxas21002       0	// Gyroscope
