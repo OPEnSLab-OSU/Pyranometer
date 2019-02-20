@@ -123,7 +123,9 @@ void measure_tmp007()
 {
 	//helpful links for math: 
 	//https://vtechworks.lib.vt.edu/bitstream/handle/10919/37014/chap2.pdf?sequence=3
+	//https://www.makeitfrom.com/material-properties/Polylactic-Acid-PLA-Polylactide
 	
+	//the +273.15 is converting Celsius to Kelvin
 	//readings before
 	double v_before = state_tmp007.inst_tmp007.readRawVoltage() + 273.15;
 	double obj_before = state_tmp007.inst_tmp007.readObjTempC() + 273.15;
@@ -137,27 +139,26 @@ void measure_tmp007()
 	double obj_after = state_tmp007.inst_tmp007.readObjTempC() + 273.15;
 	double die_after = state_tmp007.inst_tmp007.readDieTempC() + 273.15;
 
-/*
-	state_tmp007.volt = state_tmp007.inst_tmp007.readRawVoltage();
-	state_tmp007.obj_temp = state_tmp007.inst_tmp007.readObjTempC();
-	state_tmp007.die_temp = state_tmp007.inst_tmp007.readDieTempC();
-*/
+
+	state_tmp007.volt = v_after;
+	state_tmp007.obj_temp = obj_after;
+	state_tmp007.die_temp = die_after;
+
 	
 	//use Stefan-Boltzmann's Law - total IR radiated from dome, only part of what we want
-	double emissivity = 0.91;		//emissivity of PLA
-	double stefan_const = 0.000000056703;	//stefan-boltzmann constant
-	double temp = obj_after * obj_after * obj_after * obj_after;	//T^4
-	double energy_out = emissivity * stefan_const * temp;	//W/m^2
+	double emissivity = 0.91;						//emissivity of PLA
+	double stefan_const = 0.000000056703;					//stefan-boltzmann constant
+	double temp = obj_after * obj_after * obj_after * obj_after;		//T^4
+	double energy_out = emissivity * stefan_const * temp;			//W/m^2
 
 	//delta energy, the other part of what we want
-	double mass = 0;			//mass of die (or thermopile?)
-	double cp = state_tmp007.die_temp;	//temp of die? (specific heat (J.kg.K) of thermopile), may have something to do with volts
-	double delta_T = obj_after - obj_before;			//change in temperature of object
-	double delta_t = die_after - die_before;			//change in temperature of die
-	double delta_energy = (mass * cp * delta_T)/delta_t;	//change in energy
+	double mass = 0;							//mass of dome (kg)
+	double cp = 1800;							//specific heat (J/kg-K) of dome
+	double delta_T = obj_after - obj_before;				//change in temperature of object
+	double delta_energy = (mass * cp * delta_T)/config_tmp007.delay;	//change in energy (W)
 		
 	//suns total energy - what we want
-	state_tmp007.sun_energy = delta_energy + energy_out;	// W/m^2
+	state_tmp007.sun_energy = delta_energy + energy_out;			// W/m^2
 	
 	
 	
@@ -167,6 +168,6 @@ void measure_tmp007()
     Serial.print(F("Volts: ")); Serial.print(state_tmp007.volt); Serial.print(F("  "));
     Serial.print(F("Die Temp: ")); Serial.print(state_tmp007.die_temp); Serial.print(F("  "));
     Serial.print(F("Object Temp: ")); Serial.print(state_tmp007.obj_temp); Serial.print(F("  "));
-	Serial.print(F("Object Temp: ")); Serial.print(state_tmp007.obj_temp); Serial.print(F("  "));
+    Serial.print(F("W/m^2: ")); Serial.print(state_tmp007.sun_energy); Serial.print(F("  "));
   #endif
 }
