@@ -130,11 +130,12 @@ void measure_tmp007()
 	state_tmp007.die_temp = state_tmp007.inst_tmp007.readDieTempC();
 
 	//use Stefan-Boltzmann's Law
-	double emissivity = 0.91;
-	double stefan_const = 0.000000056703;
-	double area = 1.714514;
-	double temp = state_tmp007.obj_temp * state_tmp007.obj_temp * state_tmp007.obj_temp * state_tmp007.obj_temp;
-	state_tmp007.irradiance = emissivity * stefan_const * area * temp;
+	double emissivity = 0.91;		//emissivity of PLA
+	double stefan_const = 0.000000056703;	//stefan-boltzmann constant
+	double area = 1.714514;			//area of the surrounding dome
+	double temp = state_tmp007.obj_temp * state_tmp007.obj_temp * state_tmp007.obj_temp * state_tmp007.obj_temp;	//T^4
+	state_tmp007.irradiance = emissivity * stefan_const * area * temp;	//total power it Watts being radiated from the dome
+	state_tmp007.irradiance = state_tmp007.irradiance/area;			//W/m^2
 
   #if LOOM_DEBUG == 1
     Serial.print(F("[ ")); Serial.print(millis()); Serial.print(F(" ms ] "));
