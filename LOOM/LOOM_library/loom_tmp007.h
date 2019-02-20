@@ -112,7 +112,19 @@ void package_tmp007(OSCBundle *bndl, char packet_header_string[])
 	bndl->add(address_string).add((int32_t)state_tmp007.sun_energy);
 }
 #endif
-
+// Send Data through LORA
+// Gets Data and sends it through LORA
+// Work in progress
+void sendData()
+{
+	OSCBundle bndl;
+  	measure_sensors()
+ 	 package_data($bndl)
+  	#if LOOM_DEBUG == 1
+    		print_bundle(&bndl);
+  	#endif
+  	send_bundle(&bndl, LORA);
+}
 
 // --- MEASURE tmp007 ---
 //
