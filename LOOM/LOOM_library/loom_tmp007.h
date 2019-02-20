@@ -21,7 +21,7 @@ struct state_tmp007_t {
 	uint16_t volt;
 	uint16_t obj_temp;
 	uint16_t die_temp;
-	double irradiance;
+	double sun_energy;
 };
 
 
@@ -93,7 +93,7 @@ void package_tmp007(OSCBundle *bndl, char packet_header_string[], int port)
 	msg.add("voltage").add((int32_t)state_tmp007.volt);
 	msg.add("object_temp").add((int32_t)state_tmp007.obj_temp);
 	msg.add("die_temp").add((int32_t)state_tmp007.die_temp);
-	msg.add("irradiance").add((int32_t)state_tmp007.irradiance);
+	msg.add("W/m^2").add((int32_t)state_tmp007.sun_energy);
 	bndl->add(msg);
 }
 
@@ -108,8 +108,8 @@ void package_tmp007(OSCBundle *bndl, char packet_header_string[])
 	bndl->add(address_string).add((int32_t)state_tmp007.obj_temp);
 	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x40_name, "_die_temp");
 	bndl->add(address_string).add((int32_t)state_tmp007.die_temp);
-	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x40_name, "_irradiance");
-	bndl->add(address_string).add((int32_t)state_tmp007.irradiance);
+	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x40_name, "_sun_energy");
+	bndl->add(address_string).add((int32_t)state_tmp007.sun_energy);
 }
 #endif
 
@@ -121,22 +121,47 @@ void package_tmp007(OSCBundle *bndl, char packet_header_string[])
 //
 void measure_tmp007() 
 {
-	Serial.print("DELAYING\n");
-  	delay(config_tmp007.delay);
-  	Serial.print("MEASURING\n");
+	//helpful links for math: 
+	//https://vtechworks.lib.vt.edu/bitstream/handle/10919/37014/chap2.pdf?sequence=3
+	
+	//readings before
+	double v_before = state_tmp007.inst_tmp007.readRawVoltage() + 273.15;
+	double obj_before = state_tmp007.inst_tmp007.readObjTempC() + 273.15;
+	double die_before = state_tmp007.inst_tmp007.readDieTempC() + 273.15;
+	
+	//delay 4 seconds
+	delay(config_tmp007.delay);
+	
+	//readings after
+	double v_after = state_tmp007.inst_tmp007.readRawVoltage() + 273.15;
+	double obj_after = state_tmp007.inst_tmp007.readObjTempC() + 273.15;
+	double die_after = state_tmp007.inst_tmp007.readDieTempC() + 273.15;
 
+/*
 	state_tmp007.volt = state_tmp007.inst_tmp007.readRawVoltage();
 	state_tmp007.obj_temp = state_tmp007.inst_tmp007.readObjTempC();
 	state_tmp007.die_temp = state_tmp007.inst_tmp007.readDieTempC();
-
-	//use Stefan-Boltzmann's Law
+*/
+	
+	//use Stefan-Boltzmann's Law - total IR radiated from dome, only part of what we want
 	double emissivity = 0.91;		//emissivity of PLA
 	double stefan_const = 0.000000056703;	//stefan-boltzmann constant
-	double area = 1.714514;			//area of the surrounding dome
-	double temp = state_tmp007.obj_temp * state_tmp007.obj_temp * state_tmp007.obj_temp * state_tmp007.obj_temp;	//T^4
-	state_tmp007.irradiance = emissivity * stefan_const * area * temp;	//total power it Watts being radiated from the dome
-	state_tmp007.irradiance = state_tmp007.irradiance/area;			//W/m^2
+	double temp = obj_after * obj_after * obj_after * obj_after;	//T^4
+	double energy_out = emissivity * stefan_const * temp;	//W/m^2
 
+	//delta energy, the other part of what we want
+	double mass = 0;			//mass of die (or thermopile?)
+	double cp = state_tmp007.die_temp;	//temp of die? (specific heat (J.kg.K) of thermopile), may have something to do with volts
+	double delta_T = obj_after - obj_before;			//change in temperature of object
+	double delta_t = die_after - die_before;			//change in temperature of die
+	double delta_energy = (mass * cp * delta_T)/delta_t;	//change in energy
+		
+	//suns total energy - what we want
+	state_tmp007.sun_energy = delta_energy + energy_out;	// W/m^2
+	
+	
+	
+	
   #if LOOM_DEBUG == 1
     Serial.print(F("[ ")); Serial.print(millis()); Serial.print(F(" ms ] "));
     Serial.print(F("Volts: ")); Serial.print(state_tmp007.volt); Serial.print(F("  "));
