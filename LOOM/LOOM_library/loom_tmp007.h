@@ -94,6 +94,11 @@ void package_tmp007(OSCBundle *bndl, char packet_header_string[], int port)
 	msg.add("object_temp").add((int32_t)state_tmp007.obj_temp);
 	msg.add("die_temp").add((int32_t)state_tmp007.die_temp);
 	msg.add("W/m^2").add((int32_t)state_tmp007.sun_energy);
+	
+	/* Just W/m^2 data, no text
+	msg.add((int32_t)state_tmp007.sun_energy);
+	*/
+	
 	bndl->add(msg);
 }
 
@@ -110,6 +115,7 @@ void package_tmp007(OSCBundle *bndl, char packet_header_string[])
 	bndl->add(address_string).add((int32_t)state_tmp007.die_temp);
 	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x40_name, "_sun_energy");
 	bndl->add(address_string).add((int32_t)state_tmp007.sun_energy);
+	
 }
 #endif
 
@@ -146,16 +152,17 @@ void measure_tmp007()
 
 	
 	//use Stefan-Boltzmann's Law - total IR radiated from dome, only part of what we want
-	double emissivity = 0.91;						//emissivity of PLA
-	double stefan_const = 0.000000056703;					//stefan-boltzmann constant
-	double temp = obj_after * obj_after * obj_after * obj_after;		//T^4
+	double emissivity = 0.91;						//emissivity of PLA and ABS
+	double stefan_const = 0.000000056703;					//stefan-boltzmann constant (W/m^2)
+	double temp = obj_after * obj_after * obj_after * obj_after;		//T^4 (K)
 	double energy_out = emissivity * stefan_const * temp;			//W/m^2
 
 	//delta energy, the other part of what we want
 	double mass = 0;							//mass of dome (kg)
-	double cp = 1800;							//specific heat (J/kg-K) of dome
-	double delta_T = obj_after - obj_before;				//change in temperature of object
-	double delta_energy = (mass * cp * delta_T)/config_tmp007.delay;	//change in energy (W)
+	//specific heat of ABS = 1423.512 (J/kg-K)
+	double cp = 1800.324;							//specific heat (J/kg-K) of dome (PLA)
+	double delta_T = obj_after - obj_before;				//change in temperature of object (K)
+	double delta_energy = (mass * cp * delta_T)/config_tmp007.delay;	//change in energy over time (W)
 		
 	//suns total energy - what we want
 	state_tmp007.sun_energy = delta_energy + energy_out;			// W/m^2
