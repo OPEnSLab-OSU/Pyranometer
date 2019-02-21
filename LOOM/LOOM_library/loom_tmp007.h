@@ -51,7 +51,7 @@ void measure_tmp007();
 bool setup_tmp007() 
 {
 	//Setup Here
-  Serial.print("SETTING UP THERMOPILE\n");
+  //Serial.print("SETTING UP THERMOPILE\n");
 	bool is_setup;
 	state_tmp007.inst_tmp007 = Adafruit_TMP007(0x40);
 	if(state_tmp007.inst_tmp007.begin()){
@@ -64,7 +64,7 @@ bool setup_tmp007()
 		LOOM_DEBUG_Println("Failed to initialize tmp007");
 	}
 
-  Serial.print("FINISHED SETTING UP THERMOPILE\n");
+  //Serial.print("FINISHED SETTING UP THERMOPILE\n");
 	return is_setup;
 }
 
@@ -85,19 +85,20 @@ bool setup_tmp007()
 //
 void package_tmp007(OSCBundle *bndl, char packet_header_string[], int port) 
 {
-  Serial.print("PACKAGING BUNDLE\n");
+  //Serial.print("PACKAGING BUNDLE\n");
 	char address_string[255];
 	sprintf(address_string, "%s%s%d%s", packet_header_string, "/port", port, "/tmp007/data");
 
 	OSCMessage msg = OSCMessage(address_string);
+  /*
 	msg.add("voltage").add((int32_t)state_tmp007.volt);
 	msg.add("object_temp").add((int32_t)state_tmp007.obj_temp);
 	msg.add("die_temp").add((int32_t)state_tmp007.die_temp);
 	msg.add("W/m^2").add((int32_t)state_tmp007.sun_energy);
-	
-	/* Just W/m^2 data, no text
-	msg.add((int32_t)state_tmp007.sun_energy);
 	*/
+	// Just W/m^2 data, no text
+	msg.add((int32_t)state_tmp007.sun_energy);
+	
 	
 	bndl->add(msg);
 }
@@ -106,13 +107,14 @@ void package_tmp007(OSCBundle *bndl, char packet_header_string[], int port)
 void package_tmp007(OSCBundle *bndl, char packet_header_string[])
 {
 	char address_string[255];
-
+/*
 	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x40_name, "_voltage");
 	bndl->add(address_string).add((int32_t)state_tmp007.volt);
 	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x40_name, "object_temp");
 	bndl->add(address_string).add((int32_t)state_tmp007.obj_temp);
 	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x40_name, "_die_temp");
 	bndl->add(address_string).add((int32_t)state_tmp007.die_temp);
+  */
 	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x40_name, "_sun_energy");
 	bndl->add(address_string).add((int32_t)state_tmp007.sun_energy);
 	
@@ -158,7 +160,7 @@ void measure_tmp007()
 	double energy_out = emissivity * stefan_const * temp;			//W/m^2
 
 	//delta energy, the other part of what we want
-	double mass = 0;							//mass of dome (kg)
+	double mass = 0.002;							//mass of dome (kg)
 	//specific heat of ABS = 1423.512 (J/kg-K)
 	double cp = 1800.324;							//specific heat (J/kg-K) of dome (PLA)
 	double delta_T = obj_after - obj_before;				//change in temperature of object (K)
