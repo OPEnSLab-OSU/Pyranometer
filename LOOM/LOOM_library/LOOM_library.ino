@@ -16,6 +16,12 @@
 // ================================================================ 
 void setup() 
 {
+  //delay 1 minute before beginning to give time to put the lid on and get the pyrometer setup
+  delay(1000 * 60);
+
+  //delete the existing data file
+  sd_delete_file("pyro.csv");
+
   // LOOM_begin calls any relevant (based on config) LOOM device setup functions
   Loom_begin(); 
 
