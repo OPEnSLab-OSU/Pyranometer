@@ -456,6 +456,10 @@
 	//#define spreadsheet_id "1Hv2oME5sjumUXv36GtFV1Q7I83xnXu-f-ZrxUNsXS_U"  // This is Luke's Arduino Test spreadsheet
 	#define spreadsheet_id "19apKKsIjwD41yVsG-w3Wi7nnn5LLyrmbsgc1hVF8juA"		//Garen's pyro test spreadsheet
 
+
+/* Test URL: Type this into your browser and it will upload fake data to the spreadsheet. Used to test if PushingBox is working.
+http://api.pushingbox.com/pushingbox?devid=v811E3B9B344D72F&key0=sheetID&val0=19apKKsIjwD41yVsG-w3Wi7nnn5LLyrmbsgc1hVF8juA&key1=tabID&val1=Pyro1&key2=deviceID&val2=Pyro&key3=full_data&val3=wm2~400~time~0
+*/
 	// Required by PushingBox, specific to each scenario
 	char device_id[] = "v811E3B9B344D72F";		//goes to pyro spreadsheet in Garen's Google Drive
 

@@ -17,7 +17,7 @@
 void setup() 
 {
   //delay 1 minute before beginning to give time to put the lid on and get the pyrometer setup
-  delay(1000 * 60);
+  //delay(1000 * 60);
 
   //delete the existing data file
   sd_delete_file("pyro.csv");
@@ -40,7 +40,8 @@ void loop()
 
   measure_sensors();          // Read sensors, store data in sensor state struct
   package_data(&send_bndl);     // Copy sensor data from state to provided bundle
-  send_bundle(&send_bndl, LORA);    // Send bundle of packaged data
+  send_bundle(&send_bndl, WIFI);
+  //send_bundle(&send_bndl, LORA);    // Send bundle of packaged data
 
   log_bundle(&send_bndl,SDCARD, "pyro.csv"); //filename for SD files
   additional_loop_checks();     // Miscellaneous checks
