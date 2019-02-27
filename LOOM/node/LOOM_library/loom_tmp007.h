@@ -98,7 +98,7 @@ void package_tmp007(OSCBundle *bndl, char packet_header_string[], int port)
 	*/
 
 	//timestamp
-	msg.add((int32_t)millis());
+	//msg.add((int32_t)millis());
 	// Just W/m^2 data, no text
 	msg.add((int32_t)state_tmp007.sun_energy);
 	
@@ -120,8 +120,8 @@ void package_tmp007(OSCBundle *bndl, char packet_header_string[])
   */
 
  	//timestamp
- 	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x40_name, "_millis");
-	bndl->add(address_string).add((int32_t)millis());
+ 	//sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x40_name, "_millis");
+	//bndl->add(address_string).add((int32_t)millis());
 
 	//W/m^2
 	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x40_name, "_sun_energy");

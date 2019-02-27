@@ -14,6 +14,25 @@ Compatibility notes: Port A is not supported on any AVR processors at this time
 
 ---
 
+## Supported chipsets
+
+We have included code for the following chips - *sometimes these break for exciting reasons that we can't control* in which case please open an issue!
+
+ * AVR ATmega and ATtiny (any 8-bit) - 8 MHz, 12 MHz and 16 MHz
+ * Teensy 3.x and LC
+ * Arduino Due
+ * Arduino 101
+ * ATSAMD21 (Arduino Zero/M0 and other SAMD21 boards) @ 48 MHz
+ * ATSAMD51 @ 120 MHz
+ * Adafruit STM32 Feather @ 120 MHz
+ * ESP8266 any speed
+ * ESP32 any speed
+ * Nordic nRF52 (Adafruit Feather nRF52), nRF51 (micro:bit)
+
+Check forks for other architectures not listed here!
+
+---
+
 ### Roadmap
 
 The PRIME DIRECTIVE is to maintain backward compatibility with existing Arduino sketches -- many are hosted elsewhere and don't track changes here, some are in print and can never be changed!
@@ -24,8 +43,7 @@ Things I'd Like To Do But There's No Official Timeline So Please Don't Count On 
 
   * For the show() function (with all the delicate pixel timing stuff), break out each architecture into separate source files rather than the current unmaintainable tangle of #ifdef statements!
   * Really the only reason I've never incorporated an HSV color function is that I haven't settled on a type and range for the hue element (mathematically an integer from 0 to 1529 yields a "most correct" approach but it's weird to use and would probably annoy people).
-  * Add a fill function with the arguments: (color, first, count). Count, if unspecified, fills to end of strip. First, if unspecified, is zero. Color, if unspecified, is zero (effectively a strip clear operation). Do NOT then implement fifty billion minor variations (such as first, last). No. This argument sequence was very specifically chosen because reasons, and equivalents to such variations are trivially made in one's call. Just one fill function, please.
-  * At such time that the prior two items are settled, revisit the DotStar library (and maybe even LPD8806 or anything else we've got) and add the same functions and behaviors so there's a good degree of sketch compatibility across different pixel types.
+  * At such time that the prior item is settled (along with the recently-added fill() function in Adafruit_NeoPixel), revisit the DotStar library (and maybe even LPD8806 or anything else we've got) and add the same functions and behaviors so there's a good degree of sketch compatibility across different pixel types.
   * I wouldn't mind paring down strandtest a bit. More diagnostic, less Amiga demo.
   * Please don't use updateLength() or updateType() in new code. They should not have been implemented this way (use the C++ 'new' operator with the regular constructor instead) and are only sticking around because of the Prime Directive. setPin() is OK for now though, it's a trick we can use to 'recycle' pixel memory across multiple strips.
   * In the M0 and M4 code, use the hardware systick counter for bit timing rather than hand-tweaked NOPs (a temporary kludge at the time because I wasn't reading systick correctly).

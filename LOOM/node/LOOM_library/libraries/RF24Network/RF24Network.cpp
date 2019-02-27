@@ -26,7 +26,12 @@
   #include "RF24Network.h"
 #endif
 
-#if defined (ENABLE_SLEEP_MODE) && !defined (RF24_LINUX) && !defined (__ARDUINO_X86__)
+#if defined(ENABLE_SLEEP_MODE) && defined(ESP8266)
+        #warning "Disabling sleep mode because sleep doesn't work on ESP8266"
+	#undef ENABLE_SLEEP_MODE
+#endif
+
+#if defined (ENABLE_SLEEP_MODE) && !defined (RF24_LINUX) && !defined (__ARDUINO_X86__) 
 	#include <avr/sleep.h>
 	#include <avr/power.h>
 	volatile byte sleep_cycles_remaining;
@@ -157,7 +162,7 @@ uint8_t RF24Network::update(void)
   
   while ( radio.isValid() && radio.available(&pipe_num) ){
 
-    #if defined (ENABLE_DYNAMIC_PAYLOADS)
+    #if defined (ENABLE_DYNAMIC_PAYLOADS) && !defined (XMEGA_D3)
       if( (frame_size = radio.getDynamicPayloadSize() ) < sizeof(RF24NetworkHeader)){
 	    delay(10);
 		continue;
@@ -361,7 +366,7 @@ bool RF24Network::appendFragmentToFrame(RF24NetworkFrame frame) {
 	      return false;
 		}
 	  }
-	  if(frame.header.reserved > (MAX_PAYLOAD_SIZE /24) + 1 ){
+	  if(frame.header.reserved > (uint16_t(MAX_PAYLOAD_SIZE) / max_frame_payload_size) ){
 		IF_SERIAL_DEBUG_FRAGMENTATION( printf("%u FRG Too many fragments in payload %u, dropping...",millis(),frame.header.reserved); );
 		// If there are more fragments than we can possibly handle, return
 		return false;
@@ -444,7 +449,7 @@ uint8_t RF24Network::enqueue(RF24NetworkHeader* header)
 
 	if(header->type == NETWORK_FIRST_FRAGMENT){
 	    // Drop frames exceeding max size and duplicates (MAX_PAYLOAD_SIZE needs to be divisible by 24)
-	    if(header->reserved > (MAX_PAYLOAD_SIZE / max_frame_payload_size) ){
+        if(header->reserved > (uint16_t(MAX_PAYLOAD_SIZE) / max_frame_payload_size) ){
 
   #if defined (SERIAL_DEBUG_FRAGMENTATION) || defined (SERIAL_DEBUG_MINIMAL)
 			printf_P(PSTR("Frag frame with %d frags exceeds MAX_PAYLOAD_SIZE or out of sequence\n"),header->reserved);
@@ -1168,7 +1173,7 @@ uint16_t RF24Network::addressOfPipe( uint16_t node, uint8_t pipeNo )
 uint16_t RF24Network::direct_child_route_to( uint16_t node )
 {
   // Presumes that this is in fact a child!!
-  uint16_t child_mask = ( node_mask << 3 ) | 0B111;
+  uint16_t child_mask = ( node_mask << 3 ) | 0x07;
   return node & child_mask;
   
 }
@@ -1197,7 +1202,7 @@ bool RF24Network::is_valid_address( uint16_t node )
 
   while(node)
   {
-    uint8_t digit = node & 0B111;
+    uint8_t digit = node & 0x07;
 	#if !defined (RF24NetworkMulticast)
     if (digit < 1 || digit > 5)
 	#else
@@ -1294,15 +1299,18 @@ ISR(WDT_vect){
 }
 
 
-bool RF24Network::sleepNode( unsigned int cycles, int interruptPin ){
-
-
+bool RF24Network::sleepNode( unsigned int cycles, int interruptPin, uint8_t INTERRUPT_MODE){
   sleep_cycles_remaining = cycles;
   set_sleep_mode(SLEEP_MODE_PWR_DOWN); // sleep mode is set here
   sleep_enable();
   if(interruptPin != 255){
     wasInterrupted = false; //Reset Flag
-  	attachInterrupt(interruptPin,wakeUp, LOW);
+	//LOW,CHANGE, FALLING, RISING correspond with the values 0,1,2,3 respectively
+	attachInterrupt(interruptPin,wakeUp, INTERRUPT_MODE);
+  	//if(INTERRUPT_MODE==0) attachInterrupt(interruptPin,wakeUp, LOW);
+	//if(INTERRUPT_MODE==1) attachInterrupt(interruptPin,wakeUp, RISING);
+	//if(INTERRUPT_MODE==2) attachInterrupt(interruptPin,wakeUp, FALLING);
+	//if(INTERRUPT_MODE==3) attachInterrupt(interruptPin,wakeUp, CHANGE);
   }    
 
   #if defined(__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__)
@@ -1322,7 +1330,6 @@ bool RF24Network::sleepNode( unsigned int cycles, int interruptPin ){
   #else
 	WDTCSR &= ~_BV(WDIE);
   #endif
-  
   return !wasInterrupted;
 }
 
