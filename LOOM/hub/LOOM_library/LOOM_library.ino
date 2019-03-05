@@ -36,13 +36,9 @@ void loop()
   OSCBundle bndl, send_bndl;      // Declare bundles to hold incoming and outgoing data
 
   receive_bundle(&bndl, LORA);    // Receive messages over LoRa
-  if (bndl.size()) {
-    log_bundle(&bndl, PUSHINGBOX);  //push data to spreadsheet
-    log_bundle(&send_bndl,SDCARD, "pyro.csv"); //filename for SD files
-  }
-  process_bundle(&bndl);        // Dispatch message to correct handling functions
+  print_bundle(&bndl);
 
-  additional_loop_checks();     // Miscellaneous checks
+       // Miscellaneous checks
   // --- End Example ---
 
 }
