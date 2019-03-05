@@ -40,9 +40,14 @@ void loop()
 
   measure_sensors();          // Read sensors, store data in sensor state struct
   package_data(&send_bndl);     // Copy sensor data from state to provided bundle
-  send_bundle(&send_bndl, WIFI);
-  //send_bundle(&send_bndl, LORA);    // Send bundle of packaged data
+  //send_bundle(&send_bndl, WIFI);
+  //send_bndl.add("/test").add("key1").add((int32_t)123).add("key2").add((float)4.56);
+  send_bundle(&send_bndl, LORA);    // Send bundle of packaged data
 
+  //OLD test as receiver
+  //receive_bundle(&bndl, LORA);
+  //print_bundle(&bndl);
+  
   log_bundle(&send_bndl,SDCARD, "pyro.csv"); //filename for SD files
   additional_loop_checks();     // Miscellaneous checks
   // --- End Example ---
