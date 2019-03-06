@@ -58,15 +58,16 @@ bool lora_send_bundle_fragment(OSCBundle *bndl);
 //
 void setup_lora(RH_RF95 *rf95, RHReliableDatagram *manager) 
 {
-	#if hub_node_type == 0 // if hub
+//	#if hub_node_type == 0 // if hub
 		pinMode(8, INPUT_PULLUP);
-	#endif
+//	#endif
 
 	LOOM_DEBUG_Println("Initializing manager...");
 	if (!manager->init()){
 		LOOM_DEBUG_Println("init failed");
 	}
-	
+
+  //MIGHT NEED TO COMMENT OUT TO WORK OUT
 	LOOM_DEBUG_Println("Setting Frequency...");
 	if (!rf95->setFrequency(RF95_FREQ)) {
 		LOOM_DEBUG_Println("setFrequency failed");
@@ -150,6 +151,7 @@ bool lora_send_bundle(OSCBundle *bndl)
 	convert_OSC_bundle_to_string(bndl, message);
 
 	LOOM_DEBUG_Println(message);
+  LOOM_DEBUG_Println(RH_RF95_MAX_MESSAGE_LEN);
 	LOOM_DEBUG_Println2("Message length: ", strlen(message));
 	// LOOM_DEBUG_Println2("Max message length: ", LORA_MESSAGE_SIZE);
 	// LOOM_DEBUG_Print("Sending...");
@@ -171,6 +173,9 @@ bool lora_send_bundle(OSCBundle *bndl)
 	// }
 	// Serial.println();
 	// RH_RF95::printBuffer("Contents: ", (const uint8_t*)message, strlen(message)+1);
+
+  LOOM_DEBUG_Println2("Node Address: ", LORA_NODE_ADDRESS);
+  LOOM_DEBUG_Println2("HUB Address: ", LORA_HUB_ADDRESS);
 
 	#if hub_node_type == 0
 		LOOM_DEBUG_Print("Sending to node...");
@@ -211,8 +216,3 @@ bool lora_send_bundle_fragment(OSCBundle *bndl)
 		tmp_bndl.empty();
 	}
 }
-
-
-
-
-
