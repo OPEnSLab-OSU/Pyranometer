@@ -24,6 +24,7 @@ struct state_tsl2591_t {
 	uint16_t vis;
 	uint16_t ir;
 	uint16_t full;
+  double sun_energy;
 };
 
 // ================================================================ 
@@ -106,6 +107,8 @@ void package_tsl2591(OSCBundle *bndl, char packet_header_string[])
 	bndl->add(address_string).add((int32_t)state_tsl2591.ir);
 	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tsl2591_0x29_name, "_full");
 	bndl->add(address_string).add((int32_t)state_tsl2591.full);
+  sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tsl2591_0x29_name, "_total");
+  bndl->add(address_string).add((int32_t)state_tsl2591.sun_energy);
 }
 #endif
 
@@ -118,12 +121,20 @@ void measure_tsl2591()
 	state_tsl2591.ir   = state_tsl2591.inst_tsl2591.getLuminosity(TSL2591_INFRARED);
 	state_tsl2591.full = state_tsl2591.inst_tsl2591.getLuminosity(TSL2591_FULLSPECTRUM);
 	state_tsl2591.vis  =  state_tsl2591.inst_tsl2591.getLuminosity(TSL2591_VISIBLE);
-	
+  
+  // converting to W/m^2 using simple conversion factor 0.0079 W/m^2 per lux, it is an approximate factor for sunlight
+  double factor = 0.0079;
+  double ir_convert = factor * state_tsl2591.ir;
+  double full_convert = factor * state_tsl2591.full;
+  double vis_convert = factor * state_tsl2591.vis;
+  state_tsl2591.sun_energy = ir_convert + full_convert + vis_convert;
+  
 	#if LOOM_DEBUG ==1 
 		Serial.print(F("[ "));			Serial.print(millis());				Serial.print(F(" ms ] "));
 		Serial.print(F("IR: "));		Serial.print(state_tsl2591.ir);		Serial.print(F("  "));
 		Serial.print(F("Full: "));		Serial.print(state_tsl2591.full);	Serial.print(F("  "));
-		Serial.print(F("Visible: "));	Serial.print(state_tsl2591.vis);	Serial.println(F("  "));
+		Serial.print(F("Visible: "));	Serial.print(state_tsl2591.vis);	Serial.print(F("  "));
+    Serial.print(F("Total Energy (W/m^2): "));  Serial.print(state_tsl2591.sun_energy);  Serial.println(F("  "));
 	#endif
 }
 
