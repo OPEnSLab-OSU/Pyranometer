@@ -17,7 +17,7 @@
 void setup() 
 {
   //delete the existing data file
-  sd_delete_file("pyro.csv");
+  //sd_delete_file("pyro.csv");
 
   // LOOM_begin calls any relevant (based on config) LOOM device setup functions
   Loom_begin(); 

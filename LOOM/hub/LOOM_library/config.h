@@ -66,7 +66,7 @@
 // ================================================================ 
 // ===                  DEVICE TELEMETRY TYPE                   === 
 // ================================================================
-#define hub_node_type 1		// 0: Hub, 1: Node
+#define hub_node_type 0		// 0: Hub, 1: Node
 #define is_repeater   0		// Sorry, this doesn't do anything yet
 
 
@@ -78,7 +78,7 @@
 // Can override settings defined before the aggregate devices
 
 #define is_ishield      0	// 1 to specify using Ishield (generally used on WiFi)
-#define is_multiplexer  1	// 1 to specify Multiplexer (tca9548a) is being used
+#define is_multiplexer  0	// 1 to specify Multiplexer (tca9548a) is being used
 #define is_sapflow      0	// 1 to specify Sapflow  
 #define is_evaporimeter 0	// 1 to specify Evaporimeter
 
@@ -86,8 +86,8 @@
 // ================================================================ 
 // ===                 COMMUNICATION PLATFORMS                  === 
 // ================================================================
-#define is_wifi       1		// 1 to enable WiFi
-#define is_lora       0		// 1 to enable LoRa (cannot be used with nRF) (Further customization in advanced options)
+#define is_wifi       0		// 1 to enable WiFi
+#define is_lora       1		// 1 to enable LoRa (cannot be used with nRF) (Further customization in advanced options)
 #define is_nrf        0		// 1 to enable nRF (cannot be used with LoRa) (Further customization in advanced options)
 #define is_ethernet   0		// 1 to enable Ethernet (a number of options below might auto enable this anyway though)
 #define is_fona       0		// 1 to enable cellular via Fona (808 version)
@@ -110,7 +110,7 @@
 #endif
 
 // --- SD Options ---
-#define is_sd         1		// 1 to enable SD card 
+#define is_sd         0		// 1 to enable SD card 
 #if is_sd == 1
 	// Does NOT automatically save to SD
 	// This works more like a filter than an automator,
@@ -174,7 +174,7 @@
 		// #define is_tsl2561_high  1
 	#endif
 #define is_veml6075		     0	// UV sensor
-#define is_tmp007		       1	// thermopile
+#define is_tmp007		       0	// thermopile
 #define is_fxos8700        0	// Accelerometer / Magnetometer
 #define is_fxas21002       0	// Gyroscope
 #define is_zxgesturesensor 0	// ZX_Distance Sensor
@@ -377,11 +377,11 @@
 	// 10 CLIENT_ADDRESSes belong to each SERVER_ADDRESS,
 	// 10-19 for 0, 20 - 29 for 1, etc. 
 	#if hub_node_type == 0 	// If is hub
-		// #define LORA_HUB_ADDRESS  CHANNEL
-		// #define LORA_NODE_ADDRESS 1
+		 #define LORA_HUB_ADDRESS  1
+		 #define LORA_NODE_ADDRESS 2
 	#else 					// If is node
 		#define LORA_HUB_ADDRESS  1			
-		// #define LORA_NODE_ADDRESS CHANNEL
+		#define LORA_NODE_ADDRESS 2
 	#endif
 										
 	#define RF95_FREQ      915.0			// Hardware specific, Tx must match Rx
