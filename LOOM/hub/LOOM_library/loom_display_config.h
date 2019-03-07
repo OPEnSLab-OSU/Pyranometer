@@ -91,7 +91,7 @@ void print_config()
 	#if is_pushingbox == 1
 		LOOM_DEBUG_Println("\tPushingBox enabled");	
 		LOOM_DEBUG_Println2("\t\tDevice ID: ", device_id);
-		LOOM_DEBUG_Println2("\t\tSpreadsheet ID: ", spreadsheet_id);					
+		LOOM_DEBUG_Println2("\t\tSpreadsheet ID: ", init_spreadsheet_id);					
 	#endif	
 	#if is_adafruitio == 1
 		LOOM_DEBUG_Println("\tAdafruit IO enabled");							

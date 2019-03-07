@@ -36,7 +36,11 @@ void loop()
   OSCBundle bndl, send_bndl;      // Declare bundles to hold incoming and outgoing data
 
   receive_bundle(&bndl, LORA);    // Receive messages over LoRa
-  print_bundle(&bndl);
+
+  if(!bundle_empty(&bndl)){
+    print_bundle(&bndl);
+    log_bundle(&bndl, PUSHINGBOX);
+  }
 
        // Miscellaneous checks
   // --- End Example ---

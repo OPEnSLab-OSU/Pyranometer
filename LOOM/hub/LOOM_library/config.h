@@ -89,7 +89,7 @@
 #define is_wifi       0		// 1 to enable WiFi
 #define is_lora       1		// 1 to enable LoRa (cannot be used with nRF) (Further customization in advanced options)
 #define is_nrf        0		// 1 to enable nRF (cannot be used with LoRa) (Further customization in advanced options)
-#define is_ethernet   0		// 1 to enable Ethernet (a number of options below might auto enable this anyway though)
+#define is_ethernet   1		// 1 to enable Ethernet (a number of options below might auto enable this anyway though)
 #define is_fona       0		// 1 to enable cellular via Fona (808 version)
 
 
@@ -454,11 +454,12 @@
 	// #define spreadsheet_id "17XjrTjXENChYsHMVvKgePg8rsohwz0hyASkdeZZKROk"
 	// #define spreadsheet_id "16K7gOczeewt-wVHdnMR0ttWSrcqmVvWvG-2zJxo1-MA"	    
 	//#define spreadsheet_id "1Hv2oME5sjumUXv36GtFV1Q7I83xnXu-f-ZrxUNsXS_U"  // This is Luke's Arduino Test spreadsheet
-	#define spreadsheet_id "19apKKsIjwD41yVsG-w3Wi7nnn5LLyrmbsgc1hVF8juA"		//Garen's pyro test spreadsheet
+	#define init_spreadsheet_id "19apKKsIjwD41yVsG-w3Wi7nnn5LLyrmbsgc1hVF8juA"		//Garen's pyro test spreadsheet
 
 
 /* Test URL: Type this into your browser and it will upload fake data to the spreadsheet. Used to test if PushingBox is working.
 http://api.pushingbox.com/pushingbox?devid=v811E3B9B344D72F&key0=sheetID&val0=19apKKsIjwD41yVsG-w3Wi7nnn5LLyrmbsgc1hVF8juA&key1=tabID&val1=Pyro1&key2=deviceID&val2=Pyro&key3=full_data&val3=wm2~400~time~0
+http://api.pushingbox.com/pushingbox?devid=v811E3B9B344D72F&key0=sheetID&val0=19apKKsIjwD41yVsG-w3Wi7nnn5LLyrmbsgc1hVF8juA&key1=tabID&val1=Pyro1&key2=deviceID&val2=Mux1&key3=vbat&val3=3.70&key4=button&val4=1&key5=port0/tsl2591/vis&val5=956&key6=port0/tsl2591/ir&val6=262&key7=port0/tsl2591/full&val7=1219&key8=data&val8=426&key9=pin_A0&val9=1735&key10=pin_A1&val10=1629
 */
 	// Required by PushingBox, specific to each scenario
 	char device_id[] = "v811E3B9B344D72F";		//goes to pyro spreadsheet in Garen's Google Drive
@@ -469,10 +470,10 @@ http://api.pushingbox.com/pushingbox?devid=v811E3B9B344D72F&key0=sheetID&val0=19
 	#define useHubTabID 1  // Toggle option for below settings
 	#if useHubTabID == 1
 		// The hub defines tab ID regardless of bundle source
-		#define tab_id_complete "Pyro1"    // Defines tab if hub is defining tab instead of node
+		#define init_tab_id "Pyro2"    // Defines tab if hub is defining tab instead of node
 	#else
 		// Use bundle source and below prefix to define tab ID
-		#define tab_id_prefix   "E_"		// Used as a prefix if node is being used to define tab
+		#define init_tab_id  "E_"		// Used as a prefix if node is being used to define tab
 	#endif	
 
 	#define verify_family_match 1			// 1 to only upload to spreadsheet if source device family matches hub 
