@@ -14,9 +14,11 @@
 // ===                        STRUCTURES                        === 
 // ================================================================
 struct config_pushingbox_t {
-	char spreadsheet_id[50]; 		// Spreadsheet ID
-
-	char tab_id[24];			// Tab prefix
+    char *spreadsheet_id;
+	//char spreadsheet_id[50]; 		// Spreadsheet ID
+ 
+    char *tab_id;
+	//char tab_id[24];			// Tab prefix
 
 	int  minimum_upload_delay;		// Minimum delya between uploads
 };
@@ -64,10 +66,22 @@ void setup_pushingbox()
 {
 	LOOM_DEBUG_Println("Setting up PushingBox");
 
-	strcpy( config_pushingbox->spreadsheet_id, init_spreadsheet_id );
-	strcpy( config_pushingbox->tab_id, init_tab_id );
-	config_pushingbox->minimum_upload_delay = pushUploadMinDelay;
+    config_pushingbox = (config_pushingbox_t *)malloc(sizeof(config_pushingbox_t));
+    config_pushingbox->spreadsheet_id = (char *)malloc(strlen("19apKKsIjwD41yVsG-w3Wi7nnn5LLyrmbsgc1hVF8juA")*sizeof(char));
+    config_pushingbox->tab_id = (char *)malloc(strlen("Pyro2")*sizeof(char));
+    
+    config_pushingbox->spreadsheet_id = "19apKKsIjwD41yVsG-w3Wi7nnn5LLyrmbsgc1hVF8juA";
+    config_pushingbox->tab_id = "Pyro2";   
+    config_pushingbox->minimum_upload_delay = 120;
 
+    /* More modular version that is preferred, needs to be tested
+    config_pushingbox->spreadsheet_id = (char *)malloc(strlen(init_spreadsheet_id)*sizeof(char));
+    config_pushingbox->tab_id = (char *)malloc(strlen(init_tab_id)*sizeof(char));
+    
+    config_pushingbox->spreadsheet_id = init_spreadsheet_id;
+    config_pushingbox->tab_id = init_tab_id;   
+    config_pushingbox->minimum_upload_delay = pushUploadMinDelay;
+    */
 	LOOM_DEBUG_Println("PushingBox setup complete");
 }
 
@@ -98,7 +112,7 @@ void setup_pushingbox()
 void sendToPushingBox(OSCMessage &msg) 
 {
  	// If any of the filters are not passed, do not upload
-	if (!apply_pushingbox_filters(&msg)) return;
+	//if (!apply_pushingbox_filters(&msg)) return;
 
 	LOOM_DEBUG_Println("Sending to PushingBox");
 

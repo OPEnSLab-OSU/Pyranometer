@@ -459,7 +459,6 @@
 
 /* Test URL: Type this into your browser and it will upload fake data to the spreadsheet. Used to test if PushingBox is working.
 http://api.pushingbox.com/pushingbox?devid=v811E3B9B344D72F&key0=sheetID&val0=19apKKsIjwD41yVsG-w3Wi7nnn5LLyrmbsgc1hVF8juA&key1=tabID&val1=Pyro1&key2=deviceID&val2=Pyro&key3=full_data&val3=wm2~400~time~0
-http://api.pushingbox.com/pushingbox?devid=v811E3B9B344D72F&key0=sheetID&val0=19apKKsIjwD41yVsG-w3Wi7nnn5LLyrmbsgc1hVF8juA&key1=tabID&val1=Pyro1&key2=deviceID&val2=Mux1&key3=vbat&val3=3.70&key4=button&val4=1&key5=port0/tsl2591/vis&val5=956&key6=port0/tsl2591/ir&val6=262&key7=port0/tsl2591/full&val7=1219&key8=data&val8=426&key9=pin_A0&val9=1735&key10=pin_A1&val10=1629
 */
 	// Required by PushingBox, specific to each scenario
 	char device_id[] = "v811E3B9B344D72F";		//goes to pyro spreadsheet in Garen's Google Drive
@@ -476,7 +475,7 @@ http://api.pushingbox.com/pushingbox?devid=v811E3B9B344D72F&key0=sheetID&val0=19
 		#define init_tab_id  "E_"		// Used as a prefix if node is being used to define tab
 	#endif	
 
-	#define verify_family_match 1			// 1 to only upload to spreadsheet if source device family matches hub 
+	#define verify_family_match 0			// 1 to only upload to spreadsheet if source device family matches hub 
 
 //https://script.google.com/macros/s/AKfycbydgNxMcGQsoc6_QWR-quEb7PMgMdOoYo3aLUUrkFVmQZLbNl2d/exec
 	// Currently works by only sending a bundle from 
@@ -487,7 +486,7 @@ http://api.pushingbox.com/pushingbox?devid=v811E3B9B344D72F&key0=sheetID&val0=19
 	// Uses millis
 	// Recommended that pushUploadedFilter is left enabled
 	#define pushUploadFilter   	1 	// 1 to enable a millis delay to uploading to PushingBox
-	#define pushUploadMinDelay  5  	// delay in seconds
+	#define pushUploadMinDelay  120  	// delay in seconds
 #endif
 
 
