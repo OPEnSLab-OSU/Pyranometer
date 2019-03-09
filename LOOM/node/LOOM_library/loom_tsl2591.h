@@ -92,6 +92,7 @@ void package_tsl2591(OSCBundle *bndl, char packet_header_string[], uint8_t port)
 	msg.add("vis" ).add((int32_t)state_tsl2591.vis);
 	msg.add("ir"  ).add((int32_t)state_tsl2591.ir);
 	msg.add("full").add((int32_t)state_tsl2591.full);
+	msg.add("Sun Energy").add((int32_t)state_tsl2591.sun_energy);
 	
 	bndl->add(msg);
 }
