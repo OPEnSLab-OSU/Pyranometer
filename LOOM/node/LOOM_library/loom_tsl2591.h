@@ -24,7 +24,9 @@ struct state_tsl2591_t {
 	uint16_t vis;
 	uint16_t ir;
 	uint16_t full;
-  double sun_energy;
+  double vis_wm2;
+  double ir_wm2;
+  double full_wm2;
 };
 
 // ================================================================ 
@@ -92,7 +94,9 @@ void package_tsl2591(OSCBundle *bndl, char packet_header_string[], uint8_t port)
 	msg.add("vis" ).add((int32_t)state_tsl2591.vis);
 	msg.add("ir"  ).add((int32_t)state_tsl2591.ir);
 	msg.add("full").add((int32_t)state_tsl2591.full);
-	msg.add("Sun Energy").add((int32_t)state_tsl2591.sun_energy);
+  msg.add("Visible W/m^2").add((int32_t)state_tsl2591.vis_wm2);
+  msg.add("IR W/m^2").add((int32_t)state_tsl2591.ir_wm2);
+	msg.add("Visible+IR W/m^2").add((int32_t)state_tsl2591.full_wm2);
 	
 	bndl->add(msg);
 }
@@ -108,8 +112,12 @@ void package_tsl2591(OSCBundle *bndl, char packet_header_string[])
 	bndl->add(address_string).add((int32_t)state_tsl2591.ir);
 	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tsl2591_0x29_name, "_full");
 	bndl->add(address_string).add((int32_t)state_tsl2591.full);
-  sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tsl2591_0x29_name, "_total");
-  bndl->add(address_string).add((int32_t)state_tsl2591.sun_energy);
+  sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tsl2591_0x29_name, "_vis_wm2");
+  bndl->add(address_string).add((int32_t)state_tsl2591.vis_wm2);
+  sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tsl2591_0x29_name, "_ir_wm2");
+  bndl->add(address_string).add((int32_t)state_tsl2591.ir_wm2);
+  sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tsl2591_0x29_name, "_full_wm2");
+  bndl->add(address_string).add((int32_t)state_tsl2591.full_wm2);
 }
 #endif
 
@@ -128,14 +136,20 @@ void measure_tsl2591()
   double ir_convert = factor * state_tsl2591.ir;
   double full_convert = factor * state_tsl2591.full;
   double vis_convert = factor * state_tsl2591.vis;
-  state_tsl2591.sun_energy = ir_convert + full_convert + vis_convert;
+  
+  state_tsl2591.vis_wm2 = vis_convert;
+  state_tsl2591.ir_wm2 = ir_convert;
+  state_tsl2591.full_wm2 = full_convert;
+
   
 	#if LOOM_DEBUG ==1 
 		Serial.print(F("[ "));			Serial.print(millis());				Serial.print(F(" ms ] "));
 		Serial.print(F("IR: "));		Serial.print(state_tsl2591.ir);		Serial.print(F("  "));
 		Serial.print(F("Full: "));		Serial.print(state_tsl2591.full);	Serial.print(F("  "));
 		Serial.print(F("Visible: "));	Serial.print(state_tsl2591.vis);	Serial.print(F("  "));
-    Serial.print(F("Total Energy (W/m^2): "));  Serial.print(state_tsl2591.sun_energy);  Serial.println(F("  "));
+    Serial.print(F("Visible (W/m^2): "));  Serial.print(state_tsl2591.vis_wm2);  Serial.println(F("  "));
+    Serial.print(F("IR (W/m^2): "));  Serial.print(state_tsl2591.ir_wm2);  Serial.println(F("  "));
+    Serial.print(F("Total Energy (W/m^2): "));  Serial.print(state_tsl2591.full_wm2);  Serial.println(F("  "));
 	#endif
 }
 
@@ -228,8 +242,3 @@ void details_tsl2591()
 	delay(500);
 }
 #endif
-
-
-
-
-

@@ -173,9 +173,9 @@
 		// #define is_tsl2561_float 1
 		// #define is_tsl2561_high  1
 	#endif
-#define is_veml6075		   0	// UV sensor
-#define is_si1145		   1	// New UV sensor
-#define is_tmp007		   1	// thermopile
+#define is_veml6075		     0	// UV sensor
+#define is_si1145		       1	// New UV sensor
+#define is_tmp007		       1	// thermopile
 #define is_fxos8700        0	// Accelerometer / Magnetometer
 #define is_fxas21002       0	// Gyroscope
 #define is_zxgesturesensor 0	// ZX_Distance Sensor
