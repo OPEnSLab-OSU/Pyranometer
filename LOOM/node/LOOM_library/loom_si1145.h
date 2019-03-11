@@ -130,7 +130,7 @@ void measure_si1145()
     state_si1145.visible = state_si1145.inst_si1145.readVisible();
     state_si1145.ir = state_si1145.inst_si1145.readIR();
     state_si1145.uvi = (state_si1145.inst_si1145.readUV())/100;
-    state_si1145.uv_wm2 = state_si1145.inst_si1145.readUV();
+    state_si1145.uv_wm2 = state_si1145.uvi * 0.025;			//translates UVI into W/m^2
 	
 	
   #if LOOM_DEBUG == 1
