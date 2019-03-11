@@ -25,6 +25,10 @@
 	#define i2c_addr_veml6075_0x10  1
 
 #endif
+#if is_si1145 == 1
+  	#define i2c_addr_si1145_0x60   1
+
+#endif
 #if is_tmp007 == 1
   	#define i2c_addr_tmp007_0x41   1
 

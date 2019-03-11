@@ -171,6 +171,9 @@ void print_config()
 	#if is_veml6075 == 1
 		LOOM_DEBUG_Println("\t\t-VEML6075");
 	#endif
+  	#if is_si1145 == 1
+    	LOOM_DEBUG_Println("\t\t-SI1145");
+  	#endif
   	#if is_tmp007 == 1
     	LOOM_DEBUG_Println("\t\t-TMP007");
   	#endif

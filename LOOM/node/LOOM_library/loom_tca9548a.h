@@ -38,6 +38,9 @@ byte possible_addresses[] = {0x00
     	#if is_tmp007 == 1
       		, 0x40
     	#endif
+    	#if is_si1145 == 1
+      		, 0x60
+    	#endif
 		#if is_fxos8700 == 1
 			, 0x1C, 0x1D, 0x1E, 0x1F
 		#endif
@@ -198,6 +201,11 @@ void measure_sensor_data(uint8_t i2c_addr)
         		measure_tmp007();
         		return;
     	#endif
+    	#if is_si1145 == 1
+      		case 0x60:
+        		measure_si1145();
+        		return;
+    	#endif
 		#if is_tsl2561 == 1
 			case 0x39: case 0x49:   // Note that the 0x29 conflicts with the tsl2591 below
 				measure_tsl2561();
@@ -301,6 +309,11 @@ void package_sensor_data(uint8_t i2c_addr, OSCBundle *bndl, char packet_header_s
     	#if is_tmp007 == 1
       		case 0x40: 
         		package_tmp007(bndl, packet_header_string, (int)port);  //should not have to cast
+        		return;
+    	#endif
+    	#if is_si1145 == 1
+      		case 0x60: 
+        		package_si1145(bndl, packet_header_string, (int)port);  //should not have to cast
         		return;
     	#endif
 		#if is_fxos8700 == 1
@@ -475,7 +488,11 @@ void send_sensors(OSCBundle *bndl, char packet_header_string[])
         		#if is_tmp007 == 1
           			case 0x40:
             			msg.add("tmp007");     break;
-        		#endif    
+        		#endif   
+        		#if is_si1145 == 1
+          			case 0x60:
+            			msg.add("si1145");     break;
+        		#endif   
 				#if is_fxos8700 == 1
 					case 0x1C: case 0x1D: case 0x1E: case 0x1F:
 						msg.add("fxos8700"); 		break;
@@ -600,6 +617,11 @@ void setup_mux_sensors()
       		#if is_tmp007 == 1
      			case 0x40: 
      				setup_tmp007();
+       				break;
+      		#endif
+      		#if is_si1145 == 1
+     			case 0x60: 
+     				setup_si1145();
        				break;
       		#endif
 			#if is_fxos8700 == 1

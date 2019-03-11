@@ -94,13 +94,13 @@ void package_tmp007(OSCBundle *bndl, char packet_header_string[], int port)
 	msg.add("voltage").add((int32_t)state_tmp007.volt);
 	msg.add("object_temp").add((int32_t)state_tmp007.obj_temp);
 	msg.add("die_temp").add((int32_t)state_tmp007.die_temp);
-	msg.add("W/m^2").add((int32_t)state_tmp007.sun_energy);
 	*/
+	msg.add("W/m^2").add((int32_t)state_tmp007.sun_energy);
 
 	//timestamp
 	//msg.add((int32_t)millis());
 	// Just W/m^2 data, no text
-	msg.add((int32_t)state_tmp007.sun_energy);
+	//msg.add((int32_t)state_tmp007.sun_energy);
 	
 	
 	bndl->add(msg);

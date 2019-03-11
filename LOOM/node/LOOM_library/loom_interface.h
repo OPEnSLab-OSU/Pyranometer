@@ -213,6 +213,9 @@ void measure_sensors()
 		#if is_veml6075 == 1
 			measure_veml6075();
 		#endif
+		#if is_si1145 == 1
+			measure_si1145();
+		#endif
 		#if is_tmp007 == 1
 			measure_tmp007();
 		#endif
@@ -320,6 +323,9 @@ void package_data(OSCBundle *send_bndl)
 		#if is_veml6075 == 1
 			package_veml6075(send_bndl, configuration.packet_header_string);
 		#endif
+		#if is_si1145 == 1
+			package_si1145(send_bndl, configuration.packet_header_string);
+    	#endif
 		#if is_tmp007 == 1
 			package_tmp007(send_bndl, configuration.packet_header_string);
     	#endif

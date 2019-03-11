@@ -146,7 +146,7 @@
 #define button_pin 		10	// Pin button is attached to 
 
 // --- Analog Setting --- 
-#define is_analog     1		// 1 if analog input is being used, 0 if not
+#define is_analog     0		// 1 if analog input is being used, 0 if not
 
 	#define is_analog_a0 1 
 	#define is_analog_a1 1
@@ -173,8 +173,9 @@
 		// #define is_tsl2561_float 1
 		// #define is_tsl2561_high  1
 	#endif
-#define is_veml6075		     0	// UV sensor
-#define is_tmp007		       1	// thermopile
+#define is_veml6075		   0	// UV sensor
+#define is_si1145		   1	// New UV sensor
+#define is_tmp007		   1	// thermopile
 #define is_fxos8700        0	// Accelerometer / Magnetometer
 #define is_fxas21002       0	// Gyroscope
 #define is_zxgesturesensor 0	// ZX_Distance Sensor
@@ -297,8 +298,9 @@
 	#define is_sht31d          1	// Temperature / Humidity
 	#define is_tsl2561         0	// Lux Sensor
 	#define is_tsl2591         1	// Lux Sensor
-	#define is_tmp007		       1	// thermopile sensor
-	#define is_veml6075		     1	// UV sensor
+	#define is_tmp007		   1	// thermopile sensor
+	#define is_si1145		   1	//new UV sensor
+	#define is_veml6075		   1	// UV sensor
 	#define is_zxgesturesensor 1	// ZX_Distance Sensor
 
 	#define is_button 		   1	// 1 to enable button
@@ -676,6 +678,16 @@
 	#if is_multiplexer != 1
 		#if i2c_addr_veml6075_0x10 == 1
 			#define veml6075_0x10_name "veml6075"
+		#endif 
+	#endif
+#endif
+
+#if is_si1145 == 1
+	#define i2c_addr_si1145_0x60 	1
+
+	#if is_multiplexer != 1
+		#if i2c_addr_si1145_0x60 == 1
+			#define si1145_0x60_name "si1145"
 		#endif 
 	#endif
 #endif

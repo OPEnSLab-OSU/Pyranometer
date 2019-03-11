@@ -131,6 +131,9 @@ void Loom_begin()
 		#if is_veml6075 == 1
 			setup_veml6075();
 		#endif
+		#if is_si1145 == 1
+			setup_si1145();
+		#endif
 		#if is_tmp007 == 1
 			setup_tmp007();
 		#endif

@@ -301,6 +301,9 @@ void flash_led();
 #if is_tmp007 == 1
 	#include "loom_tmp007.h"
 #endif
+#if is_si1145 == 1
+	#include "loom_si1145.h"
+#endif
 #if is_fxos8700 == 1
 	#include "loom_fxos8700.h"
 #endif
