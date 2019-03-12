@@ -469,7 +469,7 @@ http://api.pushingbox.com/pushingbox?devid=v811E3B9B344D72F&key0=sheetID&val0=19
 	#define useHubTabID 1  // Toggle option for below settings
 	#if useHubTabID == 1
 		// The hub defines tab ID regardless of bundle source
-		#define init_tab_id "Pyro2"    // Defines tab if hub is defining tab instead of node
+		#define init_tab_id "Pyro3"    // Defines tab if hub is defining tab instead of node
 	#else
 		// Use bundle source and below prefix to define tab ID
 		#define init_tab_id  "E_"		// Used as a prefix if node is being used to define tab

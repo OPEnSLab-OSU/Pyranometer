@@ -15,16 +15,18 @@
 // ================================================================ 
 
 struct config_tsl2591_t {
-	uint8_t gain_level;
-	uint8_t timing_level;	
+  uint8_t gain_level;
+  uint8_t timing_level; 
 };
 
 struct state_tsl2591_t {
-	Adafruit_TSL2591 inst_tsl2591;
-	uint16_t vis;
-	uint16_t ir;
-	uint16_t full;
-  double sun_energy;
+  Adafruit_TSL2591 inst_tsl2591;
+  uint16_t vis;
+  uint16_t ir;
+  uint16_t full;
+  double vis_wm2;
+  double ir_wm2;
+  double full_wm2;
 };
 
 // ================================================================ 
@@ -43,7 +45,7 @@ void package_tsl2591(OSCBundle *bndl, char packet_header_string[]);
 void measure_tsl2591();
 void configure_tsl2591(uint8_t, uint8_t);
 #if LOOM_DEBUG == 1
-	void details_tsl2591();
+  void details_tsl2591();
 #endif
 
 // ================================================================ 
@@ -56,18 +58,18 @@ void configure_tsl2591(uint8_t, uint8_t);
 //
 bool setup_tsl2591() 
 {
-	bool is_setup;
-	state_tsl2591.inst_tsl2591 = Adafruit_TSL2591(2591);
-	if(state_tsl2591.inst_tsl2591.begin()) {
-		is_setup = true;
-		LOOM_DEBUG_Println("Initialized tsl2591");
-		configure_tsl2591(1, 0); //Medium gain and timing
-	} else {
-		is_setup = false;
-		LOOM_DEBUG_Println("Failed to initialize tsl2591");
-	}
+  bool is_setup;
+  state_tsl2591.inst_tsl2591 = Adafruit_TSL2591(2591);
+  if(state_tsl2591.inst_tsl2591.begin()) {
+    is_setup = true;
+    LOOM_DEBUG_Println("Initialized tsl2591");
+    configure_tsl2591(1, 0); //Medium gain and timing
+  } else {
+    is_setup = false;
+    LOOM_DEBUG_Println("Failed to initialize tsl2591");
+  }
 
-	return is_setup;
+  return is_setup;
 }
 
 // ================================================================ 
@@ -85,31 +87,37 @@ bool setup_tsl2591()
 //
 void package_tsl2591(OSCBundle *bndl, char packet_header_string[], uint8_t port) 
 {
-	char address_string[255];
-	sprintf(address_string, "%s%s%d%s", packet_header_string, "/port", port, "/tsl2591/data");
-	
-	OSCMessage msg = OSCMessage(address_string);
-	msg.add("vis" ).add((int32_t)state_tsl2591.vis);
-	msg.add("ir"  ).add((int32_t)state_tsl2591.ir);
-	msg.add("full").add((int32_t)state_tsl2591.full);
-	msg.add("sun Energy").add((int32_t)state_tsl2591.sun_energy);
-	
-	bndl->add(msg);
+  char address_string[255];
+  sprintf(address_string, "%s%s%d%s", packet_header_string, "/port", port, "/tsl2591/data");
+  
+  OSCMessage msg = OSCMessage(address_string);
+  msg.add("vis" ).add((int32_t)state_tsl2591.vis);
+  msg.add("ir"  ).add((int32_t)state_tsl2591.ir);
+  msg.add("full").add((int32_t)state_tsl2591.full);
+  msg.add("Visible W/m^2").add((int32_t)state_tsl2591.vis_wm2);
+  msg.add("IR W/m^2").add((int32_t)state_tsl2591.ir_wm2);
+  msg.add("Visible+IR W/m^2").add((int32_t)state_tsl2591.full_wm2);
+  
+  bndl->add(msg);
 }
 
 #if is_multiplexer != 1
 void package_tsl2591(OSCBundle *bndl, char packet_header_string[])
 {
-	char address_string[255];
+  char address_string[255];
 
-	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tsl2591_0x29_name, "_vis");
-	bndl->add(address_string).add((int32_t)state_tsl2591.vis);
-	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tsl2591_0x29_name, "_ir");
-	bndl->add(address_string).add((int32_t)state_tsl2591.ir);
-	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tsl2591_0x29_name, "_full");
-	bndl->add(address_string).add((int32_t)state_tsl2591.full);
-  sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tsl2591_0x29_name, "_total");
-  bndl->add(address_string).add((int32_t)state_tsl2591.sun_energy);
+  sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tsl2591_0x29_name, "_vis");
+  bndl->add(address_string).add((int32_t)state_tsl2591.vis);
+  sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tsl2591_0x29_name, "_ir");
+  bndl->add(address_string).add((int32_t)state_tsl2591.ir);
+  sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tsl2591_0x29_name, "_full");
+  bndl->add(address_string).add((int32_t)state_tsl2591.full);
+  sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tsl2591_0x29_name, "_vis_wm2");
+  bndl->add(address_string).add((int32_t)state_tsl2591.vis_wm2);
+  sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tsl2591_0x29_name, "_ir_wm2");
+  bndl->add(address_string).add((int32_t)state_tsl2591.ir_wm2);
+  sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tsl2591_0x29_name, "_full_wm2");
+  bndl->add(address_string).add((int32_t)state_tsl2591.full_wm2);
 }
 #endif
 
@@ -119,24 +127,30 @@ void package_tsl2591(OSCBundle *bndl, char packet_header_string[])
 //
 void measure_tsl2591() 
 {
-	state_tsl2591.ir   = state_tsl2591.inst_tsl2591.getLuminosity(TSL2591_INFRARED);
-	state_tsl2591.full = state_tsl2591.inst_tsl2591.getLuminosity(TSL2591_FULLSPECTRUM);
-	state_tsl2591.vis  =  state_tsl2591.inst_tsl2591.getLuminosity(TSL2591_VISIBLE);
+  state_tsl2591.ir   = state_tsl2591.inst_tsl2591.getLuminosity(TSL2591_INFRARED);
+  state_tsl2591.full = state_tsl2591.inst_tsl2591.getLuminosity(TSL2591_FULLSPECTRUM);
+  state_tsl2591.vis  =  state_tsl2591.inst_tsl2591.getLuminosity(TSL2591_VISIBLE);
   
   // converting to W/m^2 using simple conversion factor 0.0079 W/m^2 per lux, it is an approximate factor for sunlight
   double factor = 0.0079;
   double ir_convert = factor * state_tsl2591.ir;
   double full_convert = factor * state_tsl2591.full;
   double vis_convert = factor * state_tsl2591.vis;
-  state_tsl2591.sun_energy = ir_convert + full_convert + vis_convert;
   
-	#if LOOM_DEBUG ==1 
-		Serial.print(F("[ "));			Serial.print(millis());				Serial.print(F(" ms ] "));
-		Serial.print(F("IR: "));		Serial.print(state_tsl2591.ir);		Serial.print(F("  "));
-		Serial.print(F("Full: "));		Serial.print(state_tsl2591.full);	Serial.print(F("  "));
-		Serial.print(F("Visible: "));	Serial.print(state_tsl2591.vis);	Serial.print(F("  "));
-    Serial.print(F("Total Energy (W/m^2): "));  Serial.print(state_tsl2591.sun_energy);  Serial.println(F("  "));
-	#endif
+  state_tsl2591.vis_wm2 = vis_convert;
+  state_tsl2591.ir_wm2 = ir_convert;
+  state_tsl2591.full_wm2 = full_convert;
+
+  
+  #if LOOM_DEBUG ==1 
+    Serial.print(F("[ "));      Serial.print(millis());       Serial.print(F(" ms ] "));
+    Serial.print(F("IR: "));    Serial.print(state_tsl2591.ir);   Serial.print(F("  "));
+    Serial.print(F("Full: "));    Serial.print(state_tsl2591.full); Serial.print(F("  "));
+    Serial.print(F("Visible: ")); Serial.print(state_tsl2591.vis);  Serial.print(F("  "));
+    Serial.print(F("Visible (W/m^2): "));  Serial.print(state_tsl2591.vis_wm2);  Serial.println(F("  "));
+    Serial.print(F("IR (W/m^2): "));  Serial.print(state_tsl2591.ir_wm2);  Serial.println(F("  "));
+    Serial.print(F("Total Energy (W/m^2): "));  Serial.print(state_tsl2591.full_wm2);  Serial.println(F("  "));
+  #endif
 }
 
 
@@ -150,58 +164,58 @@ void measure_tsl2591()
 //
 void configure_tsl2591(uint8_t gain_level, uint8_t timing_level) 
 {
-	switch(gain_level) {
-		case 0:
-			state_tsl2591.inst_tsl2591.setGain(TSL2591_GAIN_LOW);  break;   // 1x gain (bright light)
-		case 1:
-			state_tsl2591.inst_tsl2591.setGain(TSL2591_GAIN_MED);  break;   // 25x gain
-		case 2:
-			state_tsl2591.inst_tsl2591.setGain(TSL2591_GAIN_HIGH); break;  // 428x gain
-		case 3:
-			state_tsl2591.inst_tsl2591.setGain(TSL2591_GAIN_MAX);  break;  // 9876x gain
-		default:
-			LOOM_DEBUG_Println("Invalid gain level."); break;
-	}
+  switch(gain_level) {
+    case 0:
+      state_tsl2591.inst_tsl2591.setGain(TSL2591_GAIN_LOW);  break;   // 1x gain (bright light)
+    case 1:
+      state_tsl2591.inst_tsl2591.setGain(TSL2591_GAIN_MED);  break;   // 25x gain
+    case 2:
+      state_tsl2591.inst_tsl2591.setGain(TSL2591_GAIN_HIGH); break;  // 428x gain
+    case 3:
+      state_tsl2591.inst_tsl2591.setGain(TSL2591_GAIN_MAX);  break;  // 9876x gain
+    default:
+      LOOM_DEBUG_Println("Invalid gain level."); break;
+  }
   
-	switch(timing_level) {
-		case 0:
-			state_tsl2591.inst_tsl2591.setTiming(TSL2591_INTEGRATIONTIME_100MS); break; // shortest integration time (bright light)
-		case 1:
-			state_tsl2591.inst_tsl2591.setTiming(TSL2591_INTEGRATIONTIME_200MS); break;
-		case 2:
-			state_tsl2591.inst_tsl2591.setTiming(TSL2591_INTEGRATIONTIME_300MS); break;
-		case 3:
-			state_tsl2591.inst_tsl2591.setTiming(TSL2591_INTEGRATIONTIME_400MS); break;
-		case 4:
-			state_tsl2591.inst_tsl2591.setTiming(TSL2591_INTEGRATIONTIME_500MS); break;
-		case 5:
-			state_tsl2591.inst_tsl2591.setTiming(TSL2591_INTEGRATIONTIME_600MS);  // longest integration time (dim light) break;
-		default:
-			LOOM_DEBUG_Println("Invalid timing level"); break;
-	}
-	
-	#if LOOM_DEBUG == 1
-		/* Display the gain and integration time for reference sake */  
-		Serial.println(F("------------------------------------"));
-		Serial.print  (F("Gain:         "));
-		tsl2591Gain_t gain = state_tsl2591.inst_tsl2591.getGain();
-		switch(gain)
-		{
-			case TSL2591_GAIN_LOW:
-				Serial.println(F("1x (Low)")); 		break;
-			case TSL2591_GAIN_MED:
-				Serial.println(F("25x (Medium)")); 	break;
-			case TSL2591_GAIN_HIGH:
-				Serial.println(F("428x (High)")); 	break;
-			case TSL2591_GAIN_MAX:
-				Serial.println(F("9876x (Max)")); 	break;
-		}
-		Serial.print  (F("Timing:       "));
-		Serial.print((state_tsl2591.inst_tsl2591.getTiming() + 1) * 100, DEC); 
-		Serial.println(F(" ms"));
-		Serial.println(F("------------------------------------"));
-		Serial.println(F(""));
-	#endif //if LOOM_DEBUG == 1
+  switch(timing_level) {
+    case 0:
+      state_tsl2591.inst_tsl2591.setTiming(TSL2591_INTEGRATIONTIME_100MS); break; // shortest integration time (bright light)
+    case 1:
+      state_tsl2591.inst_tsl2591.setTiming(TSL2591_INTEGRATIONTIME_200MS); break;
+    case 2:
+      state_tsl2591.inst_tsl2591.setTiming(TSL2591_INTEGRATIONTIME_300MS); break;
+    case 3:
+      state_tsl2591.inst_tsl2591.setTiming(TSL2591_INTEGRATIONTIME_400MS); break;
+    case 4:
+      state_tsl2591.inst_tsl2591.setTiming(TSL2591_INTEGRATIONTIME_500MS); break;
+    case 5:
+      state_tsl2591.inst_tsl2591.setTiming(TSL2591_INTEGRATIONTIME_600MS);  // longest integration time (dim light) break;
+    default:
+      LOOM_DEBUG_Println("Invalid timing level"); break;
+  }
+  
+  #if LOOM_DEBUG == 1
+    /* Display the gain and integration time for reference sake */  
+    Serial.println(F("------------------------------------"));
+    Serial.print  (F("Gain:         "));
+    tsl2591Gain_t gain = state_tsl2591.inst_tsl2591.getGain();
+    switch(gain)
+    {
+      case TSL2591_GAIN_LOW:
+        Serial.println(F("1x (Low)"));    break;
+      case TSL2591_GAIN_MED:
+        Serial.println(F("25x (Medium)"));  break;
+      case TSL2591_GAIN_HIGH:
+        Serial.println(F("428x (High)"));   break;
+      case TSL2591_GAIN_MAX:
+        Serial.println(F("9876x (Max)"));   break;
+    }
+    Serial.print  (F("Timing:       "));
+    Serial.print((state_tsl2591.inst_tsl2591.getTiming() + 1) * 100, DEC); 
+    Serial.println(F(" ms"));
+    Serial.println(F("------------------------------------"));
+    Serial.println(F(""));
+  #endif //if LOOM_DEBUG == 1
 }
 
 
@@ -214,22 +228,17 @@ void configure_tsl2591(uint8_t gain_level, uint8_t timing_level)
 #if LOOM_DEBUG == 1
 void details_tsl2591() 
 {
-	sensor_t sensor;
-	state_tsl2591.inst_tsl2591.getSensor(&sensor);
-	Serial.println(F("------------------------------------"));
-	Serial.print  (F("Sensor:       ")); Serial.println(sensor.name);
-	Serial.print  (F("Driver Ver:   ")); Serial.println(sensor.version);
-	Serial.print  (F("Unique ID:    ")); Serial.println(sensor.sensor_id);
-	Serial.print  (F("Max Value:    ")); Serial.print(sensor.max_value); Serial.println(F(" lux"));
-	Serial.print  (F("Min Value:    ")); Serial.print(sensor.min_value); Serial.println(F(" lux"));
-	Serial.print  (F("Resolution:   ")); Serial.print(sensor.resolution, 4); Serial.println(F(" lux"));  
-	Serial.println(F("------------------------------------"));
-	Serial.println(F(""));
-	delay(500);
+  sensor_t sensor;
+  state_tsl2591.inst_tsl2591.getSensor(&sensor);
+  Serial.println(F("------------------------------------"));
+  Serial.print  (F("Sensor:       ")); Serial.println(sensor.name);
+  Serial.print  (F("Driver Ver:   ")); Serial.println(sensor.version);
+  Serial.print  (F("Unique ID:    ")); Serial.println(sensor.sensor_id);
+  Serial.print  (F("Max Value:    ")); Serial.print(sensor.max_value); Serial.println(F(" lux"));
+  Serial.print  (F("Min Value:    ")); Serial.print(sensor.min_value); Serial.println(F(" lux"));
+  Serial.print  (F("Resolution:   ")); Serial.print(sensor.resolution, 4); Serial.println(F(" lux"));  
+  Serial.println(F("------------------------------------"));
+  Serial.println(F(""));
+  delay(500);
 }
 #endif
-
-
-
-
-

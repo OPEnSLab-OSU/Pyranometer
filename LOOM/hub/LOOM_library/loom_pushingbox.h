@@ -66,15 +66,17 @@ void setup_pushingbox()
 {
 	LOOM_DEBUG_Println("Setting up PushingBox");
 
+    //
     config_pushingbox = (config_pushingbox_t *)malloc(sizeof(config_pushingbox_t));
     config_pushingbox->spreadsheet_id = (char *)malloc(strlen("19apKKsIjwD41yVsG-w3Wi7nnn5LLyrmbsgc1hVF8juA")*sizeof(char));
     config_pushingbox->tab_id = (char *)malloc(strlen("Pyro2")*sizeof(char));
     
     config_pushingbox->spreadsheet_id = "19apKKsIjwD41yVsG-w3Wi7nnn5LLyrmbsgc1hVF8juA";
-    config_pushingbox->tab_id = "Pyro2";   
+    config_pushingbox->tab_id = "Pyro3";   
     config_pushingbox->minimum_upload_delay = 120;
+    //
 
-    /* More modular version that is preferred, needs to be tested
+    /*More modular version that is preferred, needs to be tested
     config_pushingbox->spreadsheet_id = (char *)malloc(strlen(init_spreadsheet_id)*sizeof(char));
     config_pushingbox->tab_id = (char *)malloc(strlen(init_tab_id)*sizeof(char));
     

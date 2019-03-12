@@ -119,8 +119,9 @@ void lora_receive_bundle(OSCBundle *bndl)
 			memset(larger_buf, '\0', sizeof(larger_buf));
 			strcpy(larger_buf, (const char*)buf);
 
-			// LOOM_DEBUG_Println2("Received: ", larger_buf);
-			// LOOM_DEBUG_Println2("Len: ", strlen((const char*)larger_buf));
+			//LOOM_DEBUG_Println2("Received: ", larger_buf);
+      LOOM_DEBUG_Println2("Max length: ", RH_RF95_MAX_MESSAGE_LEN);
+			LOOM_DEBUG_Println2("Len: ", strlen((const char*)larger_buf));
 
 			convert_OSC_string_to_bundle((char*)larger_buf, bndl); 
 
@@ -211,8 +212,3 @@ bool lora_send_bundle_fragment(OSCBundle *bndl)
 		tmp_bndl.empty();
 	}
 }
-
-
-
-
-
