@@ -211,7 +211,7 @@
 // ================================================================
 
 // --- Flash Options ---
-#define enable_flash 0   			// 1 is the default, 0 to turn of reading and writing to flash/EEPROM memory 
+#define enable_flash 1   			// 1 is the default, 0 to turn of reading and writing to flash/EEPROM memory 
 
 // --- Scripts ---
 #define enable_hub_scripts 0		// RPN script parser

@@ -91,12 +91,14 @@ void package_tsl2591(OSCBundle *bndl, char packet_header_string[], uint8_t port)
 	sprintf(address_string, "%s%s%d%s", packet_header_string, "/port", port, "/tsl2591/data");
 	
 	OSCMessage msg = OSCMessage(address_string);
+  /*
 	msg.add("vis" ).add((int32_t)state_tsl2591.vis);
 	msg.add("ir"  ).add((int32_t)state_tsl2591.ir);
 	msg.add("full").add((int32_t)state_tsl2591.full);
-  msg.add("Visible W/m^2").add((int32_t)state_tsl2591.vis_wm2);
-  msg.add("IR W/m^2").add((int32_t)state_tsl2591.ir_wm2);
-	msg.add("Visible+IR W/m^2").add((int32_t)state_tsl2591.full_wm2);
+ */
+  msg.add("Vis").add((int32_t)state_tsl2591.vis_wm2);
+  msg.add("IR").add((int32_t)state_tsl2591.ir_wm2);
+	msg.add("Total").add((int32_t)state_tsl2591.full_wm2);
 	
 	bndl->add(msg);
 }
@@ -106,12 +108,14 @@ void package_tsl2591(OSCBundle *bndl, char packet_header_string[])
 {
 	char address_string[255];
 
+  /*
 	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tsl2591_0x29_name, "_vis");
 	bndl->add(address_string).add((int32_t)state_tsl2591.vis);
 	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tsl2591_0x29_name, "_ir");
 	bndl->add(address_string).add((int32_t)state_tsl2591.ir);
 	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tsl2591_0x29_name, "_full");
 	bndl->add(address_string).add((int32_t)state_tsl2591.full);
+ */
   sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tsl2591_0x29_name, "_vis_wm2");
   bndl->add(address_string).add((int32_t)state_tsl2591.vis_wm2);
   sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tsl2591_0x29_name, "_ir_wm2");
