@@ -169,7 +169,7 @@ void measure_tmp007()
 	double energy_out = emissivity * stefan_const * temp;			//W/m^2
 
 	//delta energy, the other part of what we want
-	double mass = 0.002;							//mass of dome (kg)
+	double mass = 0.0026;							//mass of dome (kg)
 	//specific heat of ABS = 1423.512 (J/kg-K)
 	double cp = 1800.324;							//specific heat (J/kg-K) of dome (PLA)
 	double delta_T = obj_after - obj_before;				//change in temperature of object (K)

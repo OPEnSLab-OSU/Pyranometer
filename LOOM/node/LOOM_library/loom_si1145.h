@@ -93,7 +93,7 @@ void package_si1145(OSCBundle *bndl, char packet_header_string[], int port)
 	msg.add("IR").add((int32_t)state_si1145.ir);
 	msg.add("UV").add((int32_t)state_si1145.uvi);
     */
-	msg.add("UV W/m^2").add((int32_t)state_si1145.uv_wm2);
+	msg.add("UV").add((int32_t)state_si1145.uv_wm2);
 	
 	
 	bndl->add(msg);
