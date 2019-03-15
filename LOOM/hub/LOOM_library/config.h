@@ -39,7 +39,7 @@
 // ===                      SERIAL OPTIONS                      === 
 // ================================================================
 // --- Debugging --- 
-#define LOOM_DEBUG    1			// Set to 1 if you want Serial statements from various functions to print
+#define LOOM_DEBUG    0			// Set to 1 if you want Serial statements from various functions to print
 								// NOTE: Serial monitor must be opened for device to setup if this is enabled
 								//   Device will freeze if this in enabled and device does not get plugged into Serial
 								// LOOM_DEBUG_Print* are Serial prints that are removed if debugging is off
@@ -61,7 +61,7 @@
 											// 1: Permits the code to compile and the device will skip functionality
 											//     of platforms / devices that are not enabled, informing the user of such
 
-#define display_config 1		// 1 to print the uploaded configuration at start of setup, 0 to not
+#define display_config 0		// 1 to print the uploaded configuration at start of setup, 0 to not
 
 // ================================================================ 
 // ===                  DEVICE TELEMETRY TYPE                   === 

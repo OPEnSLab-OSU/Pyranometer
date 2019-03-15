@@ -38,7 +38,7 @@ void loop()
   receive_bundle(&bndl, LORA);    // Receive messages over LoRa
 
   if(!bundle_empty(&bndl)){
-    print_bundle(&bndl);
+    //print_bundle(&bndl);
     log_bundle(&bndl, PUSHINGBOX);
   }
 

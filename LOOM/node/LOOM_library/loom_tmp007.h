@@ -51,7 +51,6 @@ void measure_tmp007();
 bool setup_tmp007() 
 {
 	//Setup Here
-  	//Serial.print("SETTING UP THERMOPILE\n");
 	bool is_setup;
 	state_tmp007.inst_tmp007 = Adafruit_TMP007(0x40);
 	if(state_tmp007.inst_tmp007.begin()){
@@ -85,7 +84,6 @@ bool setup_tmp007()
 //
 void package_tmp007(OSCBundle *bndl, char packet_header_string[], int port) 
 {
-  	//Serial.print("PACKAGING BUNDLE\n");
 	char address_string[255];
 	sprintf(address_string, "%s%s%d%s", packet_header_string, "/port", port, "/tmp007/data");
 

@@ -83,7 +83,6 @@ bool setup_si1145()
 //
 void package_si1145(OSCBundle *bndl, char packet_header_string[], int port) 
 {
-  	//Serial.print("PACKAGING BUNDLE\n");
 	char address_string[255];
 	sprintf(address_string, "%s%s%d%s", packet_header_string, "/port", port, "/si1145/data");
 
