@@ -146,7 +146,7 @@
 #define button_pin 		10	// Pin button is attached to 
 
 // --- Analog Setting --- 
-#define is_analog     1		// 1 if analog input is being used, 0 if not
+#define is_analog     0		// 1 if analog input is being used, 0 if not
 
 	#define is_analog_a0 1 
 	#define is_analog_a1 1

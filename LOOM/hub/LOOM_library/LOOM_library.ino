@@ -16,13 +16,8 @@
 // ================================================================ 
 void setup() 
 {
-  //delete the existing data file
-  //sd_delete_file("pyro.csv");
-
   // LOOM_begin calls any relevant (based on config) LOOM device setup functions
   Loom_begin(); 
-
-  // Any custom setup code
 }
 
 
@@ -32,18 +27,13 @@ void setup()
 void loop() 
 {
 
-  // --- Common Example ---
   OSCBundle bndl, send_bndl;      // Declare bundles to hold incoming and outgoing data
 
   receive_bundle(&bndl, LORA);    // Receive messages over LoRa
 
   if(!bundle_empty(&bndl)){
-    //print_bundle(&bndl);
     log_bundle(&bndl, PUSHINGBOX);
   }
-
-       // Miscellaneous checks
-  // --- End Example ---
 
 }
 

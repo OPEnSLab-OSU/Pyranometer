@@ -93,13 +93,9 @@ void package_tmp007(OSCBundle *bndl, char packet_header_string[], int port)
 	msg.add("object_temp").add((int32_t)state_tmp007.obj_temp);
 	msg.add("die_temp").add((int32_t)state_tmp007.die_temp);
 	*/
-	msg.add("W/m^2").add((int32_t)state_tmp007.sun_energy);
 
-	//timestamp
-	//msg.add((int32_t)millis());
-	// Just W/m^2 data, no text
-	//msg.add((int32_t)state_tmp007.sun_energy);
-	
+	//W/m^2
+	msg.add("W/m^2").add((int32_t)state_tmp007.sun_energy);
 	
 	bndl->add(msg);
 }
@@ -116,10 +112,6 @@ void package_tmp007(OSCBundle *bndl, char packet_header_string[])
 	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x40_name, "_die_temp");
 	bndl->add(address_string).add((int32_t)state_tmp007.die_temp);
   */
-
- 	//timestamp
- 	//sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x40_name, "_millis");
-	//bndl->add(address_string).add((int32_t)millis());
 
 	//W/m^2
 	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x40_name, "_sun_energy");
@@ -167,9 +159,9 @@ void measure_tmp007()
 	double energy_out = emissivity * stefan_const * temp;			//W/m^2
 
 	//delta energy, the other part of what we want
-	double mass = 0.0026;							//mass of dome (kg)
-	//specific heat of ABS = 1423.512 (J/kg-K)
-	double cp = 1800.324;							//specific heat (J/kg-K) of dome (PLA)
+	double mass = 0.0026;							//mass of PLA dome (kg)
+	//specific heat of PLA = 1800.324 (J/kg-K)
+	double cp = 1423.512;						//specific heat (J/kg-K) of dome (ABS)
 	double delta_T = obj_after - obj_before;				//change in temperature of object (K)
 	double delta_energy = (mass * cp * delta_T)/config_tmp007.delay;	//change in energy over time (W)
 		
