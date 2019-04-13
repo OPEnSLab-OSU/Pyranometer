@@ -26,6 +26,8 @@ There are a few other parts that attach to the Feather M0, but are not chips:
 
 There is also a 3D printed housing structure, but it is not neccessary to use the pyranometer, so you should no have to worry about printing it out.
 
+In terms of software, the only changes necessary for the code is to change the mac addresses for the ethernet. Each ethernet connection will require a different set of mac addresses. The current code works for an ethernet connection in OPEnS lab. The changes should be in config.h for only the hub code.
+
 ## Installing the Arduino IDE
 In order to compile the programs and flash the Feather M0, the Arduiono IDE is needed. 
 - Follow the instructions [here](https://learn.adafruit.com/adafruit-feather-m0-basic-proto/setup) to install the Arduino IDE.
@@ -34,6 +36,7 @@ In order to compile the programs and flash the Feather M0, the Arduiono IDE is n
 ## Setting up and running the hub
 - Navigate to /LOOM/hub and open LOOM_library.ino with the Arduino IDE.
 - Go to File at the top of the IDE and open up Preferences. Under "Sketchbook location", click browse. Select /LOOM/hub/LOOM_library. This lets Arduino know where to look for libraries.
+- Change the mac addresses if the hub ethernet connection is not in OPEnS lab. The changes should be made in config.h of the hub code. Search for "is_ethernet" and change the values of the "byte mac[]" array.
 - Plug in the Feather M0 and wait for your computer to detect/setup the device. Windows 10 does this automatically.
 - Go to Tools at the top of the IDE and select "Adafruit Feather M0" as the board.
 - Go to Tools at the top of the IDE and select the port the Feather M0 is connected to. 
