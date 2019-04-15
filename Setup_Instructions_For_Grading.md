@@ -74,4 +74,4 @@ Note that the node and hub will not do a whole lot on their own. In order to see
 - Connect a 3.7v Lipo battery to the Feather M0.
 
 ## Watching the data live
-- Go to https://docs.google.com/spreadsheets/d/19apKKsIjwD41yVsG-w3Wi7nnn5LLyrmbsgc1hVF8juA/edit?usp=sharing to see the pyranometer data being uploaded in real time. If everything was hooked up properly and the hub has internet access,data should be uploaded periodically.
+- Go to https://docs.google.com/spreadsheets/d/19apKKsIjwD41yVsG-w3Wi7nnn5LLyrmbsgc1hVF8juA/edit?usp=sharing to see the pyranometer data being uploaded in real time. If everything was hooked up properly and the hub has internet access,data should be uploaded periodically. Data is uploaded to tab 3.
