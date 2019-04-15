@@ -34,13 +34,20 @@ In order to compile the programs and flash the Feather M0, the Arduiono IDE is n
 - Follow the instructions [here](https://learn.adafruit.com/adafruit-feather-m0-basic-proto/setup) to install the Arduino IDE for your specific OS.
 - Follow the instructions [here](https://learn.adafruit.com/adafruit-feather-m0-basic-proto/using-with-arduino-ide) to install the SAMD libraries for your specific OS.
 
+## Getting the code
+- Run the following Git command to copy the repo to your local machine:
+$git clone https://github.com/porterga/Senior-Project-Group3-Pyranometer.git
+- The source code is in LOOM/
+- The CAD files are in /CAD
+- The Requirements document and Design Document are in Spring2019_docs/
+
 ## Setting up and running the hub
 - Navigate to /LOOM/hub and open LOOM_library.ino with the Arduino IDE.
 - Go to File at the top of the IDE and open up Preferences. Under "Sketchbook location", click browse. Select /LOOM/hub/LOOM_library. This lets Arduino know where to look for libraries.
 - Change the mac addresses if the hub ethernet connection is not in OPEnS lab. The changes should be made in config.h of the hub code. Search for "is_ethernet" and change the values of the "byte mac[]" array.
 - Plug in the Feather M0 and wait for your computer to detect/setup the device. Windows 10 does this automatically.
 - Go to Tools at the top of the IDE and select "Adafruit Feather M0" as the board.
-- Go to Tools at the top of the IDE and select the port the Feather M0 is connected to (typically COM 11). 
+- Go to Tools at the top of the IDE and select the port the Feather M0 is connected to (typically COM 11). COM port will not appear if no Feather M0 is plugged in.
 - To compile the code, click "Verify" (circle with a checkmark) in the top left corner of the IDE.
 - To flash the Feather M0 with the hub code, click "Upload" (circle with right pointing arrow) in the top left corner of the IDE.
 - The hub will now be operational.
@@ -50,7 +57,7 @@ In order to compile the programs and flash the Feather M0, the Arduiono IDE is n
 - Go to File at the top of the IDE and open up Preferences. Under "Sketchbook location", click browse. Select /LOOM/node/LOOM_library. This lets Arduino know where to look for libraries.
 - Plug in the Feather M0 and wait for your computer to detect/setup the device. Windows 10 does this automatically.
 - Go to Tools at the top of the IDE and select "Adafruit Feather M0" as the board.
-- Go to Tools at the top of the IDE and select the port the Feather M0 is connected to (typicall COM 11). 
+- Go to Tools at the top of the IDE and select the port the Feather M0 is connected to (typicall COM 11). COM port will not appear if no Feather M0 is plugged in.
 - To compile the code, click "Verify" (circle with a checkmark) in the top left corner of the IDE.
 - To flash the Feather M0 with the node code, click "Upload" (circle with right pointing arrow) in the top left corner of the IDE.
 - The node will now be operational.
