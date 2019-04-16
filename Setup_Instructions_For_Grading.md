@@ -31,8 +31,8 @@ In terms of software, the only changes necessary for the code is to change the m
 
 ## Installing the Arduino IDE
 In order to compile the programs and flash the Feather M0, the Arduiono IDE is needed. 
-- Follow the instructions [here](https://learn.adafruit.com/adafruit-feather-m0-basic-proto/setup) to install the Arduino IDE for your specific OS.
-- Follow the instructions [here](https://learn.adafruit.com/adafruit-feather-m0-basic-proto/using-with-arduino-ide) to install the SAMD libraries for your specific OS.
+- Follow the instructions [here](https://learn.adafruit.com/adafruit-feather-m0-basic-proto/setup) to install the latest Arduino IDE for your specific OS. We have been using Windows, but any OS should work.
+- Follow the instructions [here](https://learn.adafruit.com/adafruit-feather-m0-basic-proto/using-with-arduino-ide) to install the SAMD libraries for the Feather M0 board.
 
 ## Getting the code
 - Run the following Git command to copy the repo to your local machine:
