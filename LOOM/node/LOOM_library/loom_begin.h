@@ -137,6 +137,9 @@ void Loom_begin()
 		#if is_tmp007 == 1
 			setup_tmp007();
 		#endif
+    #if is_ads1115 == 1
+      setup_ads1115();
+    #endif
 	#endif
 
 

@@ -32,6 +32,10 @@
 #if is_tmp007 == 1
   	#define i2c_addr_tmp007_0x41   1
 
+#if  is_ads1115 == 1
+  #define 12c_addr_ads1115_0x48   1
+#endif
+
 #endif
 #if is_tsl2561 == 1
 	// 2 are used on evaporometer b/c no multiplexer

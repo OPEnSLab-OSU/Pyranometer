@@ -184,6 +184,7 @@
 #define is_mpu6050         0	// Accelerometer / Gyroscope
 #define is_lis3dh          0	// Accelerometer
 #define is_ms5803          0	// Atmospheric Pressure / Temperature Sensor
+#define is_ads1115         1  // ADC converter
 #define is_hx711           0    // Load Cell
 	#if is_hx711 == 1
 		#define hx711_calibration 961.275
@@ -302,6 +303,7 @@
 	#define is_si1145		   1	//new UV sensor
 	#define is_veml6075		   1	// UV sensor
 	#define is_zxgesturesensor 1	// ZX_Distance Sensor
+  #define is_ads1115         1  // ADC converter
 
 	#define is_button 		   1	// 1 to enable button
 #endif
