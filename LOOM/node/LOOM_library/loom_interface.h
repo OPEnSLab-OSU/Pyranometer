@@ -219,6 +219,9 @@ void measure_sensors()
 		#if is_tmp007 == 1
 			measure_tmp007();
 		#endif
+    #if is_ads1115 == 1
+      measure_ads1115();
+    #endif
 		#if is_zxgesturesensor == 1
 			measure_zxgesturesensor();
 		#endif
@@ -329,6 +332,9 @@ void package_data(OSCBundle *send_bndl)
 		#if is_tmp007 == 1
 			package_tmp007(send_bndl, configuration.packet_header_string);
     	#endif
+    #if is_ads1115 == 1
+      package_ads1115(send_bndl, configuration.packet_header_string);
+      #endif
 		#if is_zxgesturesensor == 1
 			package_zxgesturesensor(send_bndl, configuration.packet_header_string);
 		#endif

@@ -49,11 +49,9 @@ void measure_ads1115();
 bool setup_ads1115()
 {                
   //Setup Here
-  Serial.begin(9600);
   Serial.println("Initializing ADS1115..."); 
   bool is_setup;
-  Wire.begin();
-  
+    
   state_ads1115.inst_ads1115 = ADS1115(ADS1115_DEFAULT_ADDRESS);    // creating address location
   state_ads1115.inst_ads1115.initialize();                          // initialize the device
   state_ads1115.inst_ads1115.setMode(ADS1115_MODE_CONTINUOUS);      // set mode
