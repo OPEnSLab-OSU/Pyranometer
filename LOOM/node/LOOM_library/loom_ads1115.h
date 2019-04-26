@@ -132,9 +132,10 @@ void measure_ads1115(){
     int counts;
     counts = state_ads1115.inst_ads1115.getConversionP0N1();    // counts up to 16 bits
     mV = counts * state_ads1115.inst_ads1115.getMvPerCount();   // converts to mV
-    state_ads1115.radiance = mV * 5;                            // multiply by conversion factor: SP-110 = 5 * mV
+    state_ads1115.radiance = mV * 5;                            // multiply by conversion factor: SP-110 Radiance = 5 W/m^2 per mV
     #if LOOM_DEBUG == 1
       Serial.print(F("[ ")); Serial.print(millis()); Serial.print(F(" ms ] "));
+      Serial.print(F("mV ")); Serial.print(mV); Serial.print(F("  "));
       Serial.print(F(" W/m^2: ")); Serial.print(state_ads1115.radiance); Serial.print(F("  "));
     #endif
     delay(config_ads1115.delay);
