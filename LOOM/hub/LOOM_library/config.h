@@ -486,7 +486,7 @@ http://api.pushingbox.com/pushingbox?devid=v811E3B9B344D72F&key0=sheetID&val0=19
 	// Uses millis
 	// Recommended that pushUploadedFilter is left enabled
 	#define pushUploadFilter   	1 	// 1 to enable a millis delay to uploading to PushingBox
-	#define pushUploadMinDelay  120  	// delay in seconds
+	#define pushUploadMinDelay  180  	// delay in seconds
 #endif
 
 

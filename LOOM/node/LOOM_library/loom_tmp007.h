@@ -55,7 +55,7 @@ bool setup_tmp007()
 	state_tmp007.inst_tmp007 = Adafruit_TMP007(0x40);
 	if(state_tmp007.inst_tmp007.begin()){
 		is_setup = true;
-		config_tmp007.delay = 4000;
+		config_tmp007.delay = 10000;
 		LOOM_DEBUG_Println("Initialized tmp007");
 	}
 	else{
@@ -159,7 +159,7 @@ void measure_tmp007()
 	double energy_out = emissivity * stefan_const * temp;			//W/m^2
 
 	//delta energy, the other part of what we want
-	double mass = 0.0026;							//mass of PLA dome (kg)
+	double mass = 0.0022;							//mass of PLA dome (kg)
 	//specific heat of PLA = 1800.324 (J/kg-K)
 	double cp = 1423.512;						//specific heat (J/kg-K) of dome (ABS)
 	double delta_T = obj_after - obj_before;				//change in temperature of object (K)
