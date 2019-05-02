@@ -222,6 +222,7 @@ void measure_sensor_data(uint8_t i2c_addr)
     #if is_ads1115 == 1
       case 0x48:
         measure_ads1115();
+        return;
     #endif
 		#if is_fxos8700 == 1
 			case 0x1C: case 0x1D: case 0x1E: case 0x1F:

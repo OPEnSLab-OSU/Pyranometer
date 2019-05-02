@@ -52,7 +52,7 @@ bool setup_ads1115()
   Serial.println("Initializing ADS1115..."); 
   bool is_setup;
     
-  state_ads1115.inst_ads1115 = ADS1115(ADS1115_DEFAULT_ADDRESS);    // creating address location
+  state_ads1115.inst_ads1115 = ADS1115(0x48);    // creating address location
   state_ads1115.inst_ads1115.initialize();                          // initialize the device
   state_ads1115.inst_ads1115.setMode(ADS1115_MODE_CONTINUOUS);      // set mode
   
@@ -114,7 +114,7 @@ void package_ads1115(OSCBundle *bndl, char packet_header_string[])
   char address_string[255];
 
   //W/m^2
-  sprintf(address_string, "%s%s%s", packet_header_string, "/", "_sun_energy");
+  sprintf(address_string, "%s%s%s%s", packet_header_string, "/", ads1115_0x48_name, "apogee");
   bndl->add(address_string).add((int32_t)state_ads1115.radiance);
   
 }
