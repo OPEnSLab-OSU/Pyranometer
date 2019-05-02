@@ -115,9 +115,13 @@ void sendToPushingBox(OSCMessage &msg)
 {
  	// If any of the filters are not passed, do not upload
 	//if (!apply_pushingbox_filters(&msg)) return;
-
+  
+  // Only send bundles if a minimum time (pushUploadMinDelay seconds) has passed since last upload
+  #if pushUploadFilter == 1
+    if (!check_push_upload_filter()) return;
+  #endif // of pushUploadFilter
+  
 	LOOM_DEBUG_Println("Sending to PushingBox");
-
 
 	char bundle_deviceID[20], args[1024], ss_id[48];
 	bool use_default = false;
