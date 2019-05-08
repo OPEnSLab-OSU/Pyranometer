@@ -55,7 +55,7 @@ bool setup_tmp007()
 	state_tmp007.inst_tmp007 = Adafruit_TMP007(0x40);
 	if(state_tmp007.inst_tmp007.begin()){
 		is_setup = true;
-		config_tmp007.delay = 10000;
+		config_tmp007.delay = 5000;
 		LOOM_DEBUG_Println("Initialized tmp007");
 	}
 	else{
@@ -95,7 +95,8 @@ void package_tmp007(OSCBundle *bndl, char packet_header_string[], int port)
 	*/
 
 	//W/m^2
-	msg.add("W/m^2").add((int32_t)state_tmp007.sun_energy);
+	//msg.add("W/m^2").add((double)state_tmp007.sun_energy);
+  msg.add("W/m^2").add((int32_t)state_tmp007.sun_energy);
 	
 	bndl->add(msg);
 }
@@ -115,7 +116,8 @@ void package_tmp007(OSCBundle *bndl, char packet_header_string[])
 
 	//W/m^2
 	sprintf(address_string, "%s%s%s%s", packet_header_string, "/", tmp007_0x40_name, "_sun_energy");
-	bndl->add(address_string).add((int32_t)state_tmp007.sun_energy);
+	//bndl->add(address_string).add((double)state_tmp007.sun_energy);
+  bndl->add(address_string).add((int32_t)state_tmp007.sun_energy);
 	
 }
 #endif
