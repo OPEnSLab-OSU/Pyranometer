@@ -1,0 +1,15 @@
+About the code:
+  * Most of the sensors are I2C so if you want to integrate another sensor using the same method as we did, it would be best to find other I2C sensors. 
+  * The files we added are loom_tmp007.h, loom_veml6075.h, loom_si1145.h along with changes to library.ino and config.h.
+  * If you are getting an error with the libraries not being properly included, check that header files are in each folder and not in another folder within that folder.
+  
+About the materials:
+  * The square glass sheet doesn't allow IR to pass through, while the acryclic domes doesn't allow UV to pass through.
+  * The general equation we used to write the code in loom_tmp007.h is the Stefan-Bolzmann Law (http://hyperphysics.phy-astr.gsu.edu/hbase/thermo/stefan.html).
+
+About the accuracy of the data:
+  * The data from the tmp007 is not accurate. It mostly stays constant at 400 W/m^2. 
+  * The data from the tsl2591 follows closely the data from the apogee, but the W/m^2 is much lower than what it should be. It probably needs to just be calibrated to make more sense.
+  
+About the lab:
+  * OPEnS lab employs helpful staff members so use them as a resource.
