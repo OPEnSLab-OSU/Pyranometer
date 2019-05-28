@@ -2,6 +2,7 @@ About the code:
   * Most of the sensors are I2C so if you want to integrate another sensor using the same method as we did, it would be best to find other I2C sensors. 
   * The files we added are loom_tmp007.h, loom_veml6075.h, loom_si1145.h along with changes to library.ino and config.h.
   * If you are getting an error with the libraries not being properly included, check that header files are in each folder and not in another folder within that folder.
+  * PushingBox API has gone down in the past so we suggest getting proof that the data was uploaded and saving the most current data. Then at least you have backup data if the API is down.
   
 About the materials:
   * The square glass sheet doesn't allow IR to pass through, while the acryclic domes doesn't allow UV to pass through.
