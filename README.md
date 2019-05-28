@@ -4,7 +4,7 @@ Senior Project featuring the OPEnS Pyranometer radiation sensor.
 # What is a pyranometer?
 Pyranometers are a tool used to measure solar radiation. A typical pyranometer will gather data on the UV, IR, visible spectrum, and full spectrum solar radiation hitting the surface of the earth at a particular spot. This information could be used to help solar panel research, agricultural research, or climate change research. 
 
-The aim of this project was to make an open-source and low-cost. Currently, it needs two pieces of hardware - a node and a hub. The node sends the measured data to the hub (up to 5km without building interference) where the hub uploads the data to a Google spreadsheet in live time.
+The aim of this project was to make an open-source and low-cost. To do this, this pyranometer takes more time to set up. With low-cost electronics and a 3D printer, this pyranometer can be recreated. Currently, it needs two pieces of hardware - a node and a hub. The node sends the measured data to the hub (up to 5km without building interference) where the hub uploads the data to a Google spreadsheet in live time.
 
 # How to set ip
 The Setup_Instructions_For_Grading file contains step by step instructions on what to gather and how to upload the code for this project. The Assembly_Instructions file has more in depth information on necessary materials and 3D printing instructions. In that file, the cost of each material is displayed as well as containing some basic flashing instructions.
