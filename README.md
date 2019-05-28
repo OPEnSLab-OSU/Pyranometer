@@ -7,7 +7,7 @@ Pyranometers are a tool used to measure solar radiation. A typical pyranometer w
 The aim of this project was to make an open-source and low-cost. To do this, this pyranometer takes more time to set up. With low-cost electronics and a 3D printer, this pyranometer can be recreated. Currently, it needs two pieces of hardware - a node and a hub. The node sends the measured data to the hub (up to 5km without building interference) where the hub uploads the data to a Google spreadsheet in live time.
 
 # How to set up
-The [Setup_Instructions_For_Grading file] (https://github.com/OPEnSLab-OSU/Pyranometer/edit/master/README.md/Setup_Instructions_For_Grading.md) contains step by step instructions on what to gather and how to upload the code for this project. The Assembly_Instructions file has more in depth information on necessary materials and 3D printing instructions. In that file, the cost of each material is displayed as well as containing some basic flashing instructions.
+The [Setup_Instructions_For_Grading file](https://github.com/OPEnSLab-OSU/Pyranometer/edit/master/README.md/Setup_Instructions_For_Grading.md) contains step by step instructions on what to gather and how to upload the code for this project. The Assembly_Instructions file has more in depth information on necessary materials and 3D printing instructions. In that file, the cost of each material is displayed as well as containing some basic flashing instructions.
 
 
 # Description of other files and folders on this repo
